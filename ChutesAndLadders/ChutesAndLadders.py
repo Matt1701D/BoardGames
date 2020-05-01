@@ -1,5 +1,5 @@
 import random
-from ChutesAndLadders import ChutesAndLaddersBoard
+from ChutesAndLadders.ChutesAndLaddersBoard import ChutesAndLaddersBoard
 from Game import Game
 
 class ChutesAndLadders(Game):
@@ -9,7 +9,7 @@ class ChutesAndLadders(Game):
         super().__init__(0, 10, "_")
         self.maxSpin = 6
         self.players = self.getPlayers()
-        self.board = ChutesAndLaddersBoard.ChutesAndLaddersBoard(self.boardSize, self.delimeter, len(self.players))
+        self.board = ChutesAndLadders(self.boardSize, self.delimeter, len(self.players))
 
         self._playGame()
 

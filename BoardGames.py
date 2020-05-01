@@ -1,17 +1,17 @@
-from ChutesAndLadders import ChutesAndLadders
-from TicTacToe import TicTacToe
+from ChutesAndLadders.ChutesAndLadders import ChutesAndLadders
+from TicTacToe.TicTacToe import TicTacToe
 
 class BoardGames(object):
 
     #initialize game
     def __init__(self):
         myGameFactory = GameFactory()
-        myGameFactory.registerGame(1, "TicTacToe", TicTacToe.TicTacToe)
-        myGameFactory.registerGame(2, "ChutesAndLadders", ChutesAndLadders.ChutesAndLadders)
+        myGameFactory.registerGame(1, "TicTacToe")
+        myGameFactory.registerGame(2, "ChutesAndLadders")
 
         choiceOutput = "Type the number of the game you would like to play or Q to Quit\n"
-        for game in myGameFactory.GetGameNames:
-            choice = str(game) + ") " + myGameFactory.GetGameNames[game] + "\n"
+        for game in myGameFactory.GetGames:
+            choice = str(game) + ") " + myGameFactory.GetGames[game] + "\n"
             choiceOutput += choice 
         choiceOutput += "Q) Quit\n" 
 
@@ -31,21 +31,19 @@ class BoardGames(object):
 class GameFactory(object):
     def __init__(self):
         self.__games = {}
-        self.__gameNames = {}
 
     @property
-    def GetGameNames(self):
-        return self.__gameNames
+    def GetGames(self):
+        return self.__games
 
-    def registerGame(self, gameID, gameName, creator):
+    def registerGame(self, gameID, creator):
         self.__games[gameID] = creator
-        self.__gameNames[gameID] = gameName
 
     def getGame(self, gameID):
         creator = self.__games[gameID]
         if not creator:
             raise Exception("Invalid gameID: {}".format(gameID))
-        return creator()
+        return eval(creator)()
         
 if __name__ == '__main__':
     myGame = BoardGames()

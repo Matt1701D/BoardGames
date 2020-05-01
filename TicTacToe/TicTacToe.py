@@ -1,5 +1,5 @@
 import random
-from TicTacToe import TicTacToeBoard
+from TicTacToe.TicTacToeBoard import TicTacToeBoard
 from Game import Game
 
 class TicTacToe(Game):
@@ -10,7 +10,7 @@ class TicTacToe(Game):
 
         self.numPlayers = self.gameMode()
         self.difficulty = 0 if self.numPlayers == 2 else self.gameDifficulty()
-        self.board = TicTacToeBoard.TicTacToeBoard(self.boardSize, self.delimeter)
+        self.board = TicTacToeBoard(self.boardSize, self.delimeter)
         self.X = self.Y = -1
 
         self._playGame()
