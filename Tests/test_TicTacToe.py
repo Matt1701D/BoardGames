@@ -1,5 +1,6 @@
 import unittest
-from TicTacToe import TicTacToeBoard
+from TicTacToe.TicTacToeBoard import TicTacToeBoard
+from TicTacToe.TicTacToe import TicTacToe
 
 class Test_TicTacToe(unittest.TestCase):
     def test_BoardSize(self):
@@ -7,7 +8,7 @@ class Test_TicTacToe(unittest.TestCase):
         myBoardSize = 3
 
         #Act
-        myBoard = TicTacToeBoard.TicTacToeBoard(myBoardSize, '_')
+        myBoard = TicTacToeBoard(myBoardSize, '_')
         myBoardData = myBoard.GameBoard[0]
         myBoardLength = len(myBoardData)
         
@@ -18,7 +19,8 @@ class Test_TicTacToe(unittest.TestCase):
     def test_BoardMoveValid(self):
         #Arrange
         myBoardSize = 3
-        myBoard = TicTacToeBoard.TicTacToeBoard(myBoardSize, '_')
+
+        myBoard = TicTacToeBoard(myBoardSize, '_')
 
         #Act        
         myBoard.makeMove("X",[0,0])
@@ -29,7 +31,8 @@ class Test_TicTacToe(unittest.TestCase):
     def test_BoardMoveInvalid(self):
         #Arrange
         myBoardSize = 3
-        myBoard = TicTacToeBoard.TicTacToeBoard(myBoardSize, '_')
+
+        myBoard = TicTacToeBoard(myBoardSize, '_')
         myBoard.makeMove("X",[0,0])
 
         #Act        
@@ -41,12 +44,16 @@ class Test_TicTacToe(unittest.TestCase):
     def test_BoardMoveWinHorizontal(self):
         #Arrange
         myBoardSize = 3
-        myBoard = TicTacToeBoard.TicTacToeBoard(myBoardSize, '_')
+        difficulty = 2
+
+        myTTT = TicTacToe.init(myBoardSize, difficulty, 2)
+        myBoard = myTTT.board
         myBoard.makeMove("X",[0,0])
         myBoard.makeMove("X",[0,1])
 
         #Act        
-        result = myBoard.makeMoveWin()
+        myTTT.getMoveCPU()
+        result = [myTTT.Y, myTTT.X]
         
         #Assert
         self.assertEqual(result,[0,2])
@@ -54,12 +61,16 @@ class Test_TicTacToe(unittest.TestCase):
     def test_BoardMoveWinVertical(self):
         #Arrange
         myBoardSize = 3
-        myBoard = TicTacToeBoard.TicTacToeBoard(myBoardSize, '_')
+        difficulty = 2
+
+        myTTT = TicTacToe.init(myBoardSize, difficulty, 2)
+        myBoard = myTTT.board
         myBoard.makeMove("X",[0,0])
         myBoard.makeMove("X",[1,0])
 
         #Act        
-        result = myBoard.makeMoveWin()
+        myTTT.getMoveCPU()
+        result = [myTTT.Y, myTTT.X]
         
         #Assert
         self.assertEqual(result,[2,0])
@@ -67,12 +78,16 @@ class Test_TicTacToe(unittest.TestCase):
     def test_BoardMoveWinDiagonalRight(self):
         #Arrange
         myBoardSize = 3
-        myBoard = TicTacToeBoard.TicTacToeBoard(myBoardSize, '_')
+        difficulty = 2
+
+        myTTT = TicTacToe.init(myBoardSize, difficulty, 2)
+        myBoard = myTTT.board
         myBoard.makeMove("X",[0,0])
         myBoard.makeMove("X",[1,1])
 
         #Act        
-        result = myBoard.makeMoveWin()
+        myTTT.getMoveCPU()
+        result = [myTTT.Y, myTTT.X]
         
         #Assert
         self.assertEqual(result,[2,2])
@@ -80,12 +95,16 @@ class Test_TicTacToe(unittest.TestCase):
     def test_BoardMoveWinDiagonalLeft(self):
         #Arrange
         myBoardSize = 3
-        myBoard = TicTacToeBoard.TicTacToeBoard(myBoardSize, '_')
+        difficulty = 2
+
+        myTTT = TicTacToe.init(myBoardSize, difficulty, 2)
+        myBoard = myTTT.board
         myBoard.makeMove("X",[0,2])
         myBoard.makeMove("X",[1,1])
 
         #Act        
-        result = myBoard.makeMoveWin()
+        myTTT.getMoveCPU()
+        result = [myTTT.Y, myTTT.X]
         
         #Assert
         self.assertEqual(result,[2,0])
@@ -93,7 +112,7 @@ class Test_TicTacToe(unittest.TestCase):
     def test_BoardGameWinHorizontal(self):
         #Arrange
         myBoardSize = 3
-        myBoard = TicTacToeBoard.TicTacToeBoard(myBoardSize, '_')
+        myBoard = TicTacToeBoard(myBoardSize,'_')
         myBoard.makeMove("X",[0,0])
         myBoard.makeMove("X",[0,1])
         myBoard.makeMove("X",[0,2])
@@ -107,7 +126,8 @@ class Test_TicTacToe(unittest.TestCase):
     def test_BoardGameWinVertical(self):
         #Arrange
         myBoardSize = 3
-        myBoard = TicTacToeBoard.TicTacToeBoard(myBoardSize, '_')
+
+        myBoard = TicTacToeBoard(myBoardSize,'_')
         myBoard.makeMove("X",[0,0])
         myBoard.makeMove("X",[1,0])
         myBoard.makeMove("X",[2,0])
@@ -121,7 +141,8 @@ class Test_TicTacToe(unittest.TestCase):
     def test_BoardGameWinDiagonalRight(self):
         #Arrange
         myBoardSize = 3
-        myBoard = TicTacToeBoard.TicTacToeBoard(myBoardSize, '_')
+
+        myBoard = TicTacToeBoard(myBoardSize,'_')
         myBoard.makeMove("X",[0,0])
         myBoard.makeMove("X",[1,1])
         myBoard.makeMove("X",[2,2])
@@ -135,7 +156,8 @@ class Test_TicTacToe(unittest.TestCase):
     def test_BoardGameWinDiagonalLeft(self):
         #Arrange
         myBoardSize = 3
-        myBoard = TicTacToeBoard.TicTacToeBoard(myBoardSize, '_')
+
+        myBoard = TicTacToeBoard(myBoardSize,'_')
         myBoard.makeMove("X",[0,2])
         myBoard.makeMove("X",[1,1])
         myBoard.makeMove("X",[2,0])
@@ -151,45 +173,37 @@ class Test_TicTacToe(unittest.TestCase):
         myBoardSize = 3
         difficulty = 1
         turn = "X"
-        myBoard = TicTacToeBoard.TicTacToeBoard(myBoardSize, '_')
+
+        myTTT = TicTacToe.init(myBoardSize, difficulty, 2)
+        myBoard = myTTT.board
         myBoard.makeMove("X",[0,2])
         myBoard.makeMove("X",[1,1])
 
         #Act        
-        result = myBoard.getMoveCPU(difficulty,turn)
+        myTTT.getMoveCPU()
+        result = [myTTT.Y, myTTT.X]
         while(result == [2,0]):
             myBoard.GameBoard[2][0] = '_'
-            result = myBoard.getMoveCPU(difficulty,turn)
+            myTTT.getMoveCPU()
+            result = [myTTT.Y, myTTT.X]
         
         #Assert
         self.assertNotEqual(result,[2,0])
-
-    def test_BoardMoveCPUHard2(self):
-        #Arrange
-        myBoardSize = 3
-        difficulty = 3
-        turn = "O"
-        myBoard = TicTacToeBoard.TicTacToeBoard(myBoardSize, '_')
-        myBoard.makeMove("X",[0,2])
-
-        #Act        
-        result = myBoard.getMoveCPU(difficulty,turn)
-        myBoard.makeMove(result[0],result[1],turn)
-        
-        #Assert
-        self.assertEqual(myBoard.GameBoard[result[0]][result[1]],turn)
 
     def test_BoardMoveCPUHard(self):
         #Arrange
         myBoardSize = 3
         difficulty = 3
         turn = "X"
-        myBoard = TicTacToeBoard.TicTacToeBoard(myBoardSize, '_')
+
+        myTTT = TicTacToe.init(myBoardSize, difficulty, 2)
+        myBoard = myTTT.board
         myBoard.makeMove("X",[0,2])
         myBoard.makeMove("X",[1,1])
 
         #Act        
-        result = myBoard.getMoveCPU(difficulty,turn)
+        myTTT.getMoveCPU()
+        result = [myTTT.Y, myTTT.X]
         
         #Assert
         self.assertEqual(result,[2,0])

@@ -1,5 +1,5 @@
 import unittest
-from ChutesAndLadders import ChutesAndLaddersBoard
+from ChutesAndLadders.ChutesAndLaddersBoard import ChutesAndLaddersBoard
 
 class Test_ChutesAndLadders(unittest.TestCase):
 
@@ -9,7 +9,7 @@ class Test_ChutesAndLadders(unittest.TestCase):
         expBoardSize = 10        
 
         #Act
-        myBoard = ChutesAndLaddersBoard.ChutesAndLaddersBoard(expBoardSize,'-',2)
+        myBoard = ChutesAndLaddersBoard(expBoardSize,'-',2)
         rowSize = len(myBoard.GameBoard)
         colSize = len(myBoard.GameBoard[1])
 
@@ -23,7 +23,7 @@ class Test_ChutesAndLadders(unittest.TestCase):
         expCandLCount = 19
 
         #Act
-        myBoard = ChutesAndLaddersBoard.ChutesAndLaddersBoard(10,'-',2)
+        myBoard = ChutesAndLaddersBoard(10,'-',2)
         actCandLCount = len(myBoard.CandLmap)
 
         #Assert
@@ -36,7 +36,7 @@ class Test_ChutesAndLadders(unittest.TestCase):
         expPlayerLoc = {0: 0,1: 0}
 
         #Act
-        myBoard = ChutesAndLaddersBoard.ChutesAndLaddersBoard(10,'-',playerNum)
+        myBoard = ChutesAndLaddersBoard(10,'-',playerNum)
         actPlayerLoc = myBoard.PlayerLoc
 
         #Assert
@@ -45,7 +45,7 @@ class Test_ChutesAndLadders(unittest.TestCase):
     #Test moving left to right on same line
     def test_MoveLeftToRight(self):
         #Arrage
-        myBoard = ChutesAndLaddersBoard.ChutesAndLaddersBoard(10,'-',2)
+        myBoard = ChutesAndLaddersBoard(10,'-',2)
         expPlayerLoc = {0: 5,1: 0}
 
         #Act
@@ -58,7 +58,7 @@ class Test_ChutesAndLadders(unittest.TestCase):
     #Test moving left to right and reach end of line
     def test_MoveLeftToRightUp(self):
         #Arrage
-        myBoard = ChutesAndLaddersBoard.ChutesAndLaddersBoard(10,'-',2)
+        myBoard = ChutesAndLaddersBoard(10,'-',2)
         expPlayerLoc = {0: 12,1: 0}
 
         #Act
@@ -72,7 +72,7 @@ class Test_ChutesAndLadders(unittest.TestCase):
     #Test moving right to left on same line
     def test_MoveRightToLeft(self):
         #Arrage
-        myBoard = ChutesAndLaddersBoard.ChutesAndLaddersBoard(10,'-',2)
+        myBoard = ChutesAndLaddersBoard(10,'-',2)
         expPlayerLoc = {0: 18,1: 0}
 
         #Act
@@ -87,7 +87,7 @@ class Test_ChutesAndLadders(unittest.TestCase):
     #Test moving right to left on same line
     def test_MoveRightToLeftUp(self):
         #Arrage
-        myBoard = ChutesAndLaddersBoard.ChutesAndLaddersBoard(10,'-',2)
+        myBoard = ChutesAndLaddersBoard(10,'-',2)
         expPlayerLoc = {0: 24,1: 0}
 
         #Act
@@ -103,7 +103,7 @@ class Test_ChutesAndLadders(unittest.TestCase):
     #Test landing on chute top
     def test_Chute(self):
         #Arrage
-        myBoard = ChutesAndLaddersBoard.ChutesAndLaddersBoard(10,'-',2)
+        myBoard = ChutesAndLaddersBoard(10,'-',2)
         expPlayerLoc = {0: 6,1: 0}
 
         #Act
@@ -118,7 +118,7 @@ class Test_ChutesAndLadders(unittest.TestCase):
     #Test landing on ladder bottom
     def test_Ladder(self):
         #Arrage
-        myBoard = ChutesAndLaddersBoard.ChutesAndLaddersBoard(10,'-',2)
+        myBoard = ChutesAndLaddersBoard(10,'-',2)
         expPlayerLoc = {0: 38,1: 0}
 
         #Act
@@ -131,7 +131,7 @@ class Test_ChutesAndLadders(unittest.TestCase):
     #Test winning game on exactly [0,0]
     def test_WinnerExact(self):
         #Arrage
-        myBoard = ChutesAndLaddersBoard.ChutesAndLaddersBoard(10,'-',2)
+        myBoard = ChutesAndLaddersBoard(10,'-',2)
         expWinner = 1
 
         #Act
@@ -151,7 +151,7 @@ class Test_ChutesAndLadders(unittest.TestCase):
     #Test winning game landing beyond winning spot
     def test_WinnerBeyond(self):
         #Arrage
-        myBoard = ChutesAndLaddersBoard.ChutesAndLaddersBoard(10,'-',2)
+        myBoard = ChutesAndLaddersBoard(10,'-',2)
         expWinner = 1
 
         #Act

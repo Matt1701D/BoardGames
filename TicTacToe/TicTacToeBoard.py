@@ -3,10 +3,10 @@ from Board import Board
 class TicTacToeBoard(Board):
 
     def __init__(self, boardSize, delimeter):
+        super().__init__(boardSize, delimeter)
+
         self.__turnsTaken = 0
         self.__gameBoardTranspose = []
-
-        super().__init__(boardSize, delimeter)
 
         self._initBoard()
 

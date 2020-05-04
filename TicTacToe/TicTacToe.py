@@ -5,52 +5,32 @@ from Game import Game
 class TicTacToe(Game):
 
     #initialize game parameters through user input
-    def __init__(self):    
-        super().__init__("X", self.getBoardSize(), "_")
+    def __init__(self):   
+        print("\nWelcome to Tic Tac Toe!")
 
-        self.numPlayers = self.gameMode()
-        self.difficulty = 0 if self.numPlayers == 2 else self.gameDifficulty()
-        self.board = TicTacToeBoard(self.boardSize, self.delimeter)
+        boardSize = Game.getBoardSize()
+        self.numPlayers = Game.getGameMode()        
+        self.difficulty = 0 if self.numPlayers == 2 else Game.getDifficulty()        
+
+        delimeter = "_"
+        turn = "X"
         self.X = self.Y = -1
+        super().__init__(turn, boardSize, delimeter)
+
+        self.board = TicTacToeBoard(boardSize, delimeter)
 
         self._playGame()
-    
-    def getBoardSize(self):
-        print("\nWelcome to Tic Tac Toe!")
-        success = 0
-        while(not(success)):
-            boardSize = input("Enter size of board (odd number): ")
-            if (not(boardSize.isdigit())):
-                print("Board size not a number")
-            elif int(boardSize) < 3 or int(boardSize) % 2 == 0:   
-                print("Board size less than 3 or not odd")
-            else:
-                success = 1
-        return int(boardSize)
 
-    def gameDifficulty(self):
-        success = 0
-        while(not(success)):
-            difficulty = input("Enter computer difficulty 1 (Easy), 2 (Medium), 3 (Hard): ")
-            if (not(difficulty.isdigit())):
-                print("Difficulty is not a number")
-            elif int(difficulty) not in [1,2,3]:   
-                print("Difficulty must be 1, 2 or 3")
-            else:
-                success = 1
-        return int(difficulty)
-    
-    def gameMode(self):
-        success = 0
-        while(not(success)):
-            numPlayers = input("Enter 1 to play against computer or 2 to play between humans: ")
-            if (not(numPlayers.isdigit())):
-                print("Number of players is not a number")
-            elif int(numPlayers) not in [1,2]:   
-                print("Number of players must be 1 or 2")
-            else:
-                success = 1
-        return int(numPlayers)
+    @classmethod
+    def init(cls, boardSize, difficulty, gameMode):
+        obj = cls.__new__(cls)
+        super(TicTacToe, obj).__init__("X", boardSize, "_")
+
+        obj.numPlayers = gameMode
+        obj.difficulty = difficulty
+        obj.board = TicTacToeBoard(boardSize, obj.delimeter)        
+
+        return obj
 
     # PROTECTED METHODS
 
@@ -59,7 +39,7 @@ class TicTacToe(Game):
         gameEnd = 0
         while(not(gameEnd)):
             if self.numPlayers == 2 or self.turn == "X":
-                self.getMoveHuman()
+                self.__getMoveHuman()
             else:
                 self.getMoveCPU()
 
@@ -75,7 +55,9 @@ class TicTacToe(Game):
             else:
                 self.turn = "X" if self.turn == "O" else "O"
 
-    def getMoveHuman(self):
+    # PRIVATE METHODS
+
+    def __getMoveHuman(self):
         success = 0
         while (not(success)):
             userInput = input("Enter coordinates for " + self.turn + ": ")
@@ -101,7 +83,7 @@ class TicTacToe(Game):
     # if cpu difficulty is 2 or greater always pick a winning or blocking move, else just random move
     def getMoveCPU(self):        
         if self.difficulty >= 2:
-            self.makeMoveWin()
+            self.__makeMoveWin()
 
         # choose random coord if Easy or not winning move for Medium/Hard
         if self.difficulty == 1 or self.Y == self.boardSize:
@@ -114,7 +96,7 @@ class TicTacToe(Game):
             self.Y = Y
 
     # always have cpu pick coord to win or block a win
-    def makeMoveWin(self):
+    def __makeMoveWin(self):
         X = Y = self.boardSize
         XCountR = OCountR = BCountR = 0
         XCountL = OCountL = BCountL = 0
@@ -150,11 +132,11 @@ class TicTacToe(Game):
                 BCountL += 1
 
         if BCountR == 1 and ((XCountR == self.boardSize - 1) or (OCountR == self.boardSize - 1)):
-            X = BlankR[0]
-            Y = BlankR[1]
+            Y = BlankR[0]
+            X = BlankR[1]
         elif BCountL == 1 and ((XCountL == self.boardSize - 1) or (OCountL == self.boardSize - 1)):
-            X = BlankL[0]
-            Y = BlankL[1]
+            Y = BlankL[0]
+            X = BlankL[1]
 
         self.X = X
         self.Y = Y

@@ -6,28 +6,15 @@ class ChutesAndLadders(Game):
 
     #initialize game
     def __init__(self):
+        print("\nWelcome to Chutes and Ladders!")
         super().__init__(0, 10, "_")
+
         self.maxSpin = 6
-        self.players = self.getPlayers()
+        self.players = Game.getPlayers()
+
         self.board = ChutesAndLadders(self.boardSize, self.delimeter, len(self.players))
 
         self._playGame()
-
-    #get player names
-    def getPlayers(self):
-        print("\nWelcome to Chutes and Ladders!")
-
-        players = []
-        playersSuccess = False
-        while(not playersSuccess):
-            players = input("Enter unique name for players separated by comma: ")
-            players = players.split(',')
-            if len(players) == len(set(players)):
-                playersSuccess = True
-            else:
-                print("Player names not unique!")
-        
-        return players
 
     # PROTECTED METHODS
 

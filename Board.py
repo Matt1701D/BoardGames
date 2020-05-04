@@ -7,8 +7,6 @@ class Board(ABC):
         self._delimeter = delimeter
         self._gameBoard = []
 
-        super().__init__()
-
     # PROPERTIES
 
     @property

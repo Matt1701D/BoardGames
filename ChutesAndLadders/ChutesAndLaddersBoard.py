@@ -3,11 +3,11 @@ from Board import Board
 class ChutesAndLaddersBoard(Board):
 
     def __init__(self, boardSize, delimeter, playerNum):
+        super().__init__(boardSize, delimeter)
+
         self.__playerNum = playerNum
         self.__CandLmap = {}
         self.__player_loc = {}
-
-        super().__init__(boardSize, delimeter)
 
         self._initBoard()
 
