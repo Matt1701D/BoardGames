@@ -4,33 +4,36 @@ from Game import Game
 
 class TicTacToe(Game):
 
+    turn = "X"
+    delimeter = "_"
+
     #initialize game parameters through user input
     def __init__(self):   
         print("\nWelcome to Tic Tac Toe!")
+        super().__init__(turn=TicTacToe.turn, boardSize=Game.getBoardSize(), delimeter=TicTacToe.delimeter)
 
-        boardSize = Game.getBoardSize()
         self.numPlayers = Game.getGameMode()        
         self.difficulty = 0 if self.numPlayers == 2 else Game.getDifficulty()        
+        self.X = self.Y = -1        
 
-        delimeter = "_"
-        turn = "X"
-        self.X = self.Y = -1
-        super().__init__(turn, boardSize, delimeter)
-
-        self.board = TicTacToeBoard(boardSize, delimeter)
+        self.board = TicTacToeBoard(self.boardSize, self.delimeter)
 
         self._playGame()
 
+    # ClassMethod constructor that does not call __init__
+    # used for testing to get around user input
+    # alternatively could use bit in __init__ to decide
+    # who is instantiating (test or user)
     @classmethod
     def init(cls, boardSize, difficulty, gameMode):
-        obj = cls.__new__(cls)
-        super(TicTacToe, obj).__init__("X", boardSize, "_")
+        objTTT = cls.__new__(cls)
+        super(TicTacToe, objTTT).__init__(TicTacToe.turn, boardSize, TicTacToe.delimeter)
 
-        obj.numPlayers = gameMode
-        obj.difficulty = difficulty
-        obj.board = TicTacToeBoard(boardSize, obj.delimeter)        
+        objTTT.numPlayers = gameMode
+        objTTT.difficulty = difficulty
+        objTTT.board = TicTacToeBoard(boardSize, objTTT.delimeter)        
 
-        return obj
+        return objTTT
 
     # PROTECTED METHODS
 
@@ -57,6 +60,7 @@ class TicTacToe(Game):
 
     # PRIVATE METHODS
 
+    # Plaeyr chooses next move
     def __getMoveHuman(self):
         success = 0
         while (not(success)):

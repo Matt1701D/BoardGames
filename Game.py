@@ -7,17 +7,16 @@ class Game(ABC):
         self.boardSize = boardSize
         self.delimeter = delimeter
 
-        #self.board = globals()[boardClass]()
-
     # PROTECTED METHODS
 
-    # code to perform gameplay operations
+    # Method to perform gameplay operations
     @abstractmethod
     def _playGame(self):
         pass
 
     # STATIC METHODS
 
+    # User input methods for game parameters
     @staticmethod
     def getBoardSize(minSize=2, maxSize=10, oddSize=1):
         success = 0
@@ -62,7 +61,6 @@ class Game(ABC):
                 success = 1
         return int(numPlayers)
 
-    #get player names
     @staticmethod
     def getPlayers():
         players = []

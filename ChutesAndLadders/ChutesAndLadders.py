@@ -4,15 +4,19 @@ from Game import Game
 
 class ChutesAndLadders(Game):
 
+    turn = 0
+    delimeter = "_"
+    boardSize = 10
+
     #initialize game
     def __init__(self):
         print("\nWelcome to Chutes and Ladders!")
-        super().__init__(0, 10, "_")
+        super().__init__(ChutesAndLadders.turn, ChutesAndLadders.boardSize, ChutesAndLadders.delimeter)
 
         self.maxSpin = 6
         self.players = Game.getPlayers()
 
-        self.board = ChutesAndLadders(self.boardSize, self.delimeter, len(self.players))
+        self.board = ChutesAndLaddersBoard(self.boardSize, self.delimeter, len(self.players))
 
         self._playGame()
 
@@ -24,7 +28,7 @@ class ChutesAndLadders(Game):
 
         gameWon = False
         while(not(gameWon)):
-            input(self.players[self.turn] + " press Enter to spin")
+            input(self.players[self.turn] + " ("+str(self.turn)+") press Enter to spin")
             print("\n")
 
             spin = random.randint(1,self.maxSpin)

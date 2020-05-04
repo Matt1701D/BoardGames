@@ -3,15 +3,16 @@ from TicTacToe.TicTacToe import TicTacToe
 
 class BoardGames(object):
 
-    #initialize game
-    def __init__(self):
-        myGameFactory = GameFactory()
-        myGameFactory.registerGame(1, "TicTacToe")
-        myGameFactory.registerGame(2, "ChutesAndLadders")
+    # Display Game Menu with list of registered games
+    @staticmethod
+    def ShowGameMenu():
+        # Register list of games using className 
+        GameFactory.registerGame(1, "TicTacToe")
+        GameFactory.registerGame(2, "ChutesAndLadders")
 
         choiceOutput = "Type the number of the game you would like to play or Q to Quit\n"
-        for game in myGameFactory.GetGames:
-            choice = str(game) + ") " + myGameFactory.GetGames[game] + "\n"
+        for game in GameFactory.games:
+            choice = str(game) + ") " + GameFactory.games[game] + "\n"
             choiceOutput += choice 
         choiceOutput += "Q) Quit\n" 
 
@@ -23,28 +24,29 @@ class BoardGames(object):
                 break
             elif (not(game.isdigit())):
                 print("Choice is not a number")
-            elif int(game) not in [1,2]:   
-                print("Choice must be 1 or 2")   
+            elif int(game) not in GameFactory.games:   
+                print("Invalid choice")   
             else:
-                myGameFactory.getGame(int(game))
+                GameFactory.getGame(int(game))
 
+# Game Factory class for list of games to play
+# Register the game in BoardGames class and add
+# module import so that only className is needed
+# when registering game now (also used on user menu)
 class GameFactory(object):
-    def __init__(self):
-        self.__games = {}
+    games = {}
+    
+    @staticmethod
+    def registerGame(gameID, creator):
+        GameFactory.games[gameID] = creator
 
-    @property
-    def GetGames(self):
-        return self.__games
-
-    def registerGame(self, gameID, creator):
-        self.__games[gameID] = creator
-
-    def getGame(self, gameID):
-        creator = self.__games[gameID]
+    @staticmethod
+    def getGame(gameID):
+        creator = GameFactory.games[gameID]
         if not creator:
             raise Exception("Invalid gameID: {}".format(gameID))
         return eval(creator)()
         
 if __name__ == '__main__':
-    myGame = BoardGames()
+    BoardGames.ShowGameMenu()
 
