@@ -6,10 +6,6 @@ class BoardGames(object):
     # Display Game Menu with list of registered games
     @staticmethod
     def ShowGameMenu():
-        # Register list of games using className 
-        GameFactory.registerGame(1, "TicTacToe")
-        GameFactory.registerGame(2, "ChutesAndLadders")
-
         choiceOutput = "Type the number of the game you would like to play or Q to Quit\n"
         for game in GameFactory.games:
             choice = str(game) + ") " + GameFactory.games[game] + "\n"
@@ -48,5 +44,9 @@ class GameFactory(object):
         return eval(creator)()
         
 if __name__ == '__main__':
+    # Register list of games using className 
+    GameFactory.registerGame(1, "TicTacToe")
+    GameFactory.registerGame(2, "ChutesAndLadders")
+
     BoardGames.ShowGameMenu()
 
