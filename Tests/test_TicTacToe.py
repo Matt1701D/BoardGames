@@ -52,7 +52,7 @@ class Test_TicTacToe(unittest.TestCase):
         myBoard.makeMove("X",[0,1])
 
         #Act        
-        myTTT.getMoveCPU()
+        myTTT._TicTacToe__getMoveCPU()
         result = [myTTT.Y, myTTT.X]
         
         #Assert
@@ -69,7 +69,7 @@ class Test_TicTacToe(unittest.TestCase):
         myBoard.makeMove("X",[1,0])
 
         #Act        
-        myTTT.getMoveCPU()
+        myTTT._TicTacToe__getMoveCPU()
         result = [myTTT.Y, myTTT.X]
         
         #Assert
@@ -86,7 +86,7 @@ class Test_TicTacToe(unittest.TestCase):
         myBoard.makeMove("X",[1,1])
 
         #Act        
-        myTTT.getMoveCPU()
+        myTTT._TicTacToe__getMoveCPU()
         result = [myTTT.Y, myTTT.X]
         
         #Assert
@@ -103,7 +103,7 @@ class Test_TicTacToe(unittest.TestCase):
         myBoard.makeMove("X",[1,1])
 
         #Act        
-        myTTT.getMoveCPU()
+        myTTT._TicTacToe__getMoveCPU()
         result = [myTTT.Y, myTTT.X]
         
         #Assert
@@ -178,13 +178,13 @@ class Test_TicTacToe(unittest.TestCase):
         myBoard = myTTT.board
         myBoard.makeMove("X",[0,2])
         myBoard.makeMove("X",[1,1])
-
+        
         #Act        
-        myTTT.getMoveCPU()
+        myTTT._TicTacToe__getMoveCPU()
         result = [myTTT.Y, myTTT.X]
         while(result == [2,0]):
             myBoard.GameBoard[2][0] = '_'
-            myTTT.getMoveCPU()
+            myTTT._TicTacToe__getMoveCPU()
             result = [myTTT.Y, myTTT.X]
         
         #Assert
@@ -202,7 +202,7 @@ class Test_TicTacToe(unittest.TestCase):
         myBoard.makeMove("X",[1,1])
 
         #Act        
-        myTTT.getMoveCPU()
+        myTTT._TicTacToe__getMoveCPU()
         result = [myTTT.Y, myTTT.X]
         
         #Assert

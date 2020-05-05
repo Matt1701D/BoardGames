@@ -44,7 +44,7 @@ class TicTacToe(Game):
             if self.numPlayers == 2 or self.turn == "X":
                 self.__getMoveHuman()
             else:
-                self.getMoveCPU()
+                self.__getMoveCPU()
 
             self.board.makeMove(self.turn, [self.Y, self.X])
             self.board.printBoard()
@@ -85,7 +85,7 @@ class TicTacToe(Game):
                     success = 1 
 
     # if cpu difficulty is 2 or greater always pick a winning or blocking move, else just random move
-    def getMoveCPU(self):        
+    def __getMoveCPU(self):        
         if self.difficulty >= 2:
             self.__makeMoveWin()
 
