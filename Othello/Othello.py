@@ -1,47 +1,31 @@
-import random
-from TicTacToe.TicTacToeBoard import TicTacToeBoard
 from Game import Game
+from Othello.OthelloBoard import OthelloBoard
 
-class TicTacToe(Game):
+class Othello(Game):
 
-    turn = "X"
+    turn = "B"
     delimeter = "_"
+    boardSize = 8
 
-    #initialize game parameters through user input
-    def __init__(self):   
-        print("\nWelcome to Tic Tac Toe!")
-        super().__init__(turn=TicTacToe.turn, boardSize=Game.getBoardSize(), delimeter=TicTacToe.delimeter)
+    def __init__(self):
+        super().__init__(Othello.turn, Othello.boardSize, Othello.delimeter)
 
-        self.numPlayers = Game.getGameMode()        
-        self.difficulty = 0 if self.numPlayers == 2 else Game.getDifficulty()        
-        self.X = self.Y = -1        
+        self.numPlayers = Game.getGameMode()
+        self.X = self.Y = -1
 
-        self.board = TicTacToeBoard(self.boardSize, self.delimeter)
+        self.board = OthelloBoard(self.boardSize,self.delimeter)
 
         self._playGame()
-
-    # ClassMethod constructor that does not call __init__
-    # used for testing to get around user input
-    # alternatively could use bit in __init__ to decide
-    # who is instantiating (test or user)
-    @classmethod
-    def init(cls, boardSize, difficulty, gameMode):
-        objTTT = cls.__new__(cls)
-        super(TicTacToe, objTTT).__init__(TicTacToe.turn, boardSize, TicTacToe.delimeter)
-
-        objTTT.numPlayers = gameMode
-        objTTT.difficulty = difficulty
-        objTTT.board = TicTacToeBoard(boardSize, objTTT.delimeter)        
-
-        return objTTT
 
     # PROTECTED METHODS
 
     # get next move from user or generate for cpu until game has ended
     def _playGame(self):
+        self.board.printBoard()
+
         gameEnd = 0
         while(not(gameEnd)):
-            if self.numPlayers == 2 or self.turn == "X":
+            if self.numPlayers == 2 or self.turn == "B":
                 self.__getMoveHuman()
             else:
                 self.__getMoveCPU()
@@ -56,7 +40,7 @@ class TicTacToe(Game):
             elif gameEnd:
                 print(self.turn + " WINS!\n")
             else:
-                self.turn = "X" if self.turn == "O" else "O"
+                self.turn = "B" if self.turn == "W" else "W"
 
     # PRIVATE METHODS
 
@@ -78,7 +62,7 @@ class TicTacToe(Game):
                 elif (not(Y.isdigit()) or int(Y) >= self.boardSize):
                     print("Second coordinate isnt an integer or less than " + str(self.boardSize))
                 elif (not(self.board.validateMove(self.turn, coord))):
-                    print("Already move made at coordinates:" + str(coord))
+                    print("Invalid move at coordinates:" + str(coord))
                 else:
                     self.X = int(X)
                     self.Y = int(Y)
@@ -146,5 +130,4 @@ class TicTacToe(Game):
         self.Y = Y
 
 if __name__ == '__main__':
-    myTTT = TicTacToe()
-
+    myTTT = Othello()

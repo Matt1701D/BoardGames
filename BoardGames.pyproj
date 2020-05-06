@@ -34,6 +34,15 @@
     <Compile Include="Game.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Othello\Othello.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Othello\OthelloBoard.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Othello\__init__.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="TicTacToe\TicTacToeBoard.py" />
     <Compile Include="BoardGames.py" />
     <Compile Include="ChutesAndLadders\ChutesAndLadders.py" />
@@ -49,6 +58,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="ChutesAndLadders\" />
+    <Folder Include="Othello\" />
     <Folder Include="TicTacToe\" />
     <Folder Include="Tests\" />
   </ItemGroup>

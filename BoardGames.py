@@ -1,5 +1,6 @@
 from ChutesAndLadders.ChutesAndLadders import ChutesAndLadders
 from TicTacToe.TicTacToe import TicTacToe
+from Othello.Othello import Othello
 
 class BoardGames(object):
 
@@ -47,6 +48,7 @@ if __name__ == '__main__':
     # Register list of games using className 
     GameFactory.registerGame(1, "TicTacToe")
     GameFactory.registerGame(2, "ChutesAndLadders")
+    GameFactory.registerGame(3, "Othello")
 
     BoardGames.ShowGameMenu()
 
