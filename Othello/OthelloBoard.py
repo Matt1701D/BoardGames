@@ -5,8 +5,7 @@ class OthelloBoard(Board):
     def __init__(self, boardSize, delimeter):
         super().__init__(boardSize, delimeter)
 
-        self.__turnsTaken = 0
-        self.__pieceCount = {"B":2,"W":2}
+        self.__pieceCount = {"B":2,"W":2,str(self._delimeter):(self._boardSize**2)-4}
         self.__tmpMove = []
         self._initBoard()
 
@@ -32,14 +31,13 @@ class OthelloBoard(Board):
     def makeMove(self, turn, coord):
         if self.validateMove(turn, coord):
             self._updateBoard(coord, turn)
-            self.__turnsTaken+=1
 
     # check for winner
     def checkWinner(self):
-        if self.__turnsTaken == self._boardSize * self._boardSize:
-            if self._BCount > self.WCount:
+        if 0 in self.__pieceCount.values():
+            if self.__pieceCount["B"] > self.__pieceCount["W"] :
                return 0
-            elif self._BCount < self.WCount:
+            elif self.__pieceCount["B"] < self.__pieceCount["W"]:
               return 1
             else:
               return 2
@@ -60,6 +58,7 @@ class OthelloBoard(Board):
 
             self._gameBoard[Y][X] = turn
             self.__pieceCount[turn] = int(self.__pieceCount[turn]) + 1
+            self.__pieceCount[self._delimeter] = int(self.__pieceCount[self._delimeter]) - 1
 
             opp = "B" if turn == "W" else "W"
             for p in self.__tmpMove:
