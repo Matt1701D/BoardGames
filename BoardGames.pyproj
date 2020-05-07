@@ -43,6 +43,9 @@
     <Compile Include="Othello\__init__.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Tests\test_Othello.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="TicTacToe\TicTacToeBoard.py" />
     <Compile Include="BoardGames.py" />
     <Compile Include="ChutesAndLadders\ChutesAndLadders.py" />

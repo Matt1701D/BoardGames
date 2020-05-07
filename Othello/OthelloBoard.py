@@ -10,6 +10,12 @@ class OthelloBoard(Board):
         self.__tmpMove = []
         self._initBoard()
 
+    # PROPERTIES
+
+    @property
+    def PieceCount(self):
+        return self.__pieceCount
+
     # PUBLIC METHODS
 
     # ensure move is valid
@@ -43,8 +49,8 @@ class OthelloBoard(Board):
     def _initBoard(self):
         super()._initBoard(1)
 
-        self._gameBoard[3][3] = self._gameBoard[4][4] = "B"
-        self._gameBoard[3][4] = self._gameBoard[4][3] = "W"
+        self._gameBoard[3][3] = self._gameBoard[4][4] = "W"
+        self._gameBoard[3][4] = self._gameBoard[4][3] = "B"
 
     # update gameBoard
     def _updateBoard(self, coord, turn, isNewPos=False):
@@ -75,7 +81,7 @@ class OthelloBoard(Board):
 
             # Check horizontal right
             myPieceFound = False
-            if X < self._boardSize - 2:
+            if X < self._boardSize - 2 and self._gameBoard[Y][X+1] == opp:
                 for i in range(X+1, self._boardSize):
                     if self._gameBoard[Y][i] == opp:
                         tmpMove.append([Y,i])
@@ -90,7 +96,7 @@ class OthelloBoard(Board):
 
             # Check horizontal left
             myPieceFound = False
-            if X > 1:
+            if X > 1 and self._gameBoard[Y][X-1] == opp:
                 for i in range(X-1, -1, -1):
                     if self._gameBoard[Y][i] == opp:
                         tmpMove.append([Y,i])
@@ -105,7 +111,7 @@ class OthelloBoard(Board):
             
             # Check vertical down
             myPieceFound = False
-            if Y < self._boardSize - 2:
+            if Y < self._boardSize - 2  and self._gameBoard[Y+1][X] == opp:
                 for i in range(Y+1, self._boardSize):
                     if self._gameBoard[i][X] == opp:
                         tmpMove.append([i,X])
@@ -120,7 +126,7 @@ class OthelloBoard(Board):
 
             # Check vertical up
             myPieceFound = False
-            if Y > 1:
+            if Y > 1  and self._gameBoard[Y-1][X] == opp:
                 for i in range(Y-1, -1, -1):
                     if self._gameBoard[i][X] == opp:
                         tmpMove.append([i,X])
@@ -135,7 +141,7 @@ class OthelloBoard(Board):
 
             # Check diagonal up and right
             myPieceFound = False
-            if X < self._boardSize - 2 and Y > 1:
+            if X < self._boardSize - 2 and Y > 1 and self._gameBoard[Y-1][X+1] == opp:
                 maxMve = min(Y, self._boardSize-1-X)
 
                 for i in range(1, maxMve+1):
@@ -152,7 +158,7 @@ class OthelloBoard(Board):
 
             # Check diagonal up and left
             myPieceFound = False
-            if X > 1 and Y > 1:
+            if X > 1 and Y > 1 and self._gameBoard[Y-1][X-1] == opp:
                 maxMve = min(Y, X)
 
                 for i in range(1, maxMve+1):
@@ -169,7 +175,7 @@ class OthelloBoard(Board):
 
             # Check diagonal down and right
             myPieceFound = False
-            if X < self._boardSize - 2 and Y < self._boardSize - 2:
+            if X < self._boardSize - 2 and Y < self._boardSize - 2 and self._gameBoard[Y+1][X+1] == opp:
                 maxMve = min(self._boardSize-1-Y, self._boardSize-1-X)
 
                 for i in range(1, maxMve+1):
@@ -186,7 +192,7 @@ class OthelloBoard(Board):
 
             # Check diagonal down and left
             myPieceFound = False
-            if X > 1 and Y < self._boardSize - 2:
+            if X > 1 and Y < self._boardSize - 2 and self._gameBoard[Y+1][X-1] == opp:
                 maxMve = min(self._boardSize-1-Y, X)
 
                 for i in range(1, maxMve+1):
