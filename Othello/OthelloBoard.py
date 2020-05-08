@@ -32,9 +32,15 @@ class OthelloBoard(Board):
         X = int(coord[1])
         
         if self._gameBoard[Y][X] != self._delimeter:
-            return 0 
+            return False 
         else:
-            return self.__isValidMove(turn, coord)
+            opp = self.Opp(turn)
+            tmpMove = []
+            
+            for dir in self.__dirList:
+                self.__isValidMoveDir(Y, X, dir, opp)
+
+            return False if not self.__tmpMove else True
 
     # store turn in board and transposed board
     def makeMove(self, turn, coord):
@@ -78,10 +84,7 @@ class OthelloBoard(Board):
             self.__tmpMove = []
 
     # PRIVATE METHODS
-    def __isValidMoveDir(self, coord, coordDir, opp):
-        Y = int(coord[0])
-        X = int(coord[1])
-
+    def __isValidMoveDir(self, Y, X, coordDir, opp):
         Yinc = int(coordDir[0])
         Xinc = int(coordDir[1])
 
@@ -102,16 +105,3 @@ class OthelloBoard(Board):
 
         if myPieceFound and tmpMove:
             self.__tmpMove.extend(tmpMove)
-
-    # check all 8 directions for valid move and store flips in tmp list
-    def __isValidMove(self, turn, coord):
-        if  not self.__tmpMove:
-            Y = int(coord[0])
-            X = int(coord[1])
-            opp = self.Opp(turn)
-            tmpMove = []
-            
-            for dir in self.__dirList:
-                self.__isValidMoveDir(coord, dir, opp)
-
-        return False if not self.__tmpMove else True
