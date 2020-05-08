@@ -204,7 +204,7 @@ class Test_Othello(unittest.TestCase):
         expCnt = {"B":2,"W":2,"_":60}
 
         #Act
-        myBoard.makeMove("B",[4,6])
+        myBoard.makeMove("B",[5,3])
         actBoard = myBoard.GameBoard  
         actCnt = myBoard.PieceCount
 

@@ -28,21 +28,25 @@ class OthelloBoard(Board):
 
     # ensure move is valid
     def validateMove(self, turn, coord):
-        Y = int(coord[0])
-        X = int(coord[1])
-        
-        if self._gameBoard[Y][X] != self._delimeter:
-            return False 
+        if self.__tmpMove:
+            return True
         else:
-            opp = self.Opp(turn)
-            tmpMove = []
+            Y = int(coord[0])
+            X = int(coord[1])
+        
+            # invalid spot chosen
+            if self._gameBoard[Y][X] != self._delimeter:
+                return False 
+            else:
+                opp = self.Opp(turn)
             
-            for dir in self.__dirList:
-                self.__isValidMoveDir(Y, X, dir, opp)
+                # check all directions for flips
+                for dir in self.__dirList:
+                    self.__isValidMoveDir(Y, X, dir, opp)
 
-            return False if not self.__tmpMove else True
+                return False if not self.__tmpMove else True
 
-    # store turn in board and transposed board
+    # investigate chosen move and update if valid
     def makeMove(self, turn, coord):
         if self.validateMove(turn, coord):
             self._updateBoard(coord, turn)
@@ -57,11 +61,22 @@ class OthelloBoard(Board):
             else:
               return 2
 
+    # Print out game board
+    def printBoard(self):
+        print(' '*2+' '.join([str(i) for i in range(0,self._boardSize)]))
+        j = 0
+        for row in self._gameBoard:
+            print(str(j) + ' ' + ' '.join([str(s) for s in row]))
+            j+=1
+        print("\n")
+        print("White = {}, Black = {}, Blank = {}".format(self.__pieceCount["W"], self.__pieceCount["B"], self.__pieceCount[self._delimeter]))
+
     # PROTECTED METHODS
 
     def _initBoard(self):
         super()._initBoard(1)
 
+        # set initial position
         self._gameBoard[3][3] = self._gameBoard[4][4] = "W"
         self._gameBoard[3][4] = self._gameBoard[4][3] = "B"
 
@@ -70,38 +85,50 @@ class OthelloBoard(Board):
         if self.__tmpMove:
             Y = int(coord[0])
             X = int(coord[1])
+            opp = self.Opp(turn)
 
+            # set chosen spot and update counters
             self._gameBoard[Y][X] = turn
             self.__pieceCount[turn] = int(self.__pieceCount[turn]) + 1
             self.__pieceCount[self._delimeter] = int(self.__pieceCount[self._delimeter]) - 1
 
-            opp = "B" if turn == "W" else "W"
+            # do the flips and update counters
             for p in self.__tmpMove:
                 self._gameBoard[p[0]][p[1]] = turn
                 self.__pieceCount[turn] = int(self.__pieceCount[turn]) + 1
                 self.__pieceCount[opp] = int(self.__pieceCount[opp]) - 1
 
+            # reset master flip list
             self.__tmpMove = []
 
     # PRIVATE METHODS
+
+    # Check direction for valid move
     def __isValidMoveDir(self, Y, X, coordDir, opp):
         Yinc = int(coordDir[0])
         Xinc = int(coordDir[1])
 
         tmpMove = []
-        myPieceFound = False
-        
+        myPieceFound = False        
+
         for i in range(1, self._boardSize-1):
+            # set coordinate to check based on direction and incrementer
             Yj = (i * Yinc if Yinc != 0 else 0) + Y
             Xj = (i * Xinc if Xinc != 0 else 0) + X
 
+            # make sure we are within board dimensions
             if Yj < self._boardSize and Xj < self._boardSize:
+                # if peice is opponent save it to flip later
                 if self._gameBoard[Yj][Xj] == opp:
                     tmpMove.append([Yj,Xj])
-                elif self._gameBoard[Yj][Xj] == self._delimeter:
+                # if first piece isnt opponent or piece is blank quit
+                elif i == 1 or self._gameBoard[Yj][Xj] == self._delimeter:
                     break
+                # found our piece so we have valid move
                 else:
                     myPieceFound = True
+                    break
 
+        # add flips from this direction to master list of flips
         if myPieceFound and tmpMove:
             self.__tmpMove.extend(tmpMove)

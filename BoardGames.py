@@ -33,13 +33,13 @@ class BoardGames(object):
 class GameFactory(object):
     games = {}
     
-    @staticmethod
-    def registerGame(gameID, creator):
-        GameFactory.games[gameID] = creator
+    @classmethod
+    def registerGame(cls, gameID, creator):
+        cls.games[gameID] = creator
 
-    @staticmethod
-    def getGame(gameID):
-        creator = GameFactory.games[gameID]
+    @classmethod
+    def getGame(cls, gameID):
+        creator = cls.games[gameID]
         if not creator:
             raise Exception("Invalid gameID: {}".format(gameID))
         return eval(creator)()
