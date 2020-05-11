@@ -8,9 +8,19 @@ class Othello(Game):
     boardSize = 8
 
     def __init__(self):
+        print("\nWelcome to Othello!")
         super().__init__(Othello.turn, Othello.boardSize, Othello.delimeter)
 
         self.numPlayers = Game.getGameMode()
+
+        # initialize potential cpu moves and num of flips
+        self.__cpuMoves = {}
+        if self.numPlayers == 2:
+            self.__cpuMoves["[4,2]"] = 1
+            self.__cpuMoves["[2,4]"] = 1
+            self.__cpuMoves["[3,5]"] = 1
+            self.__cpuMoves["[5,3]"] = 1
+
         self.X = self.Y = -1
 
         self.board = OthelloBoard(self.boardSize,self.delimeter)
@@ -29,6 +39,7 @@ class Othello(Game):
                 self.__getMoveHuman()
             else:
                 self.__getMoveCPU()
+                print("{} placed piece at {} {}\n".format(self.turn, self.Y, self.X))
 
             self.board.makeMove(self.turn, [self.Y, self.X])
             self.board.printBoard()
@@ -68,66 +79,59 @@ class Othello(Game):
                     self.Y = int(Y)
                     success = 1 
 
-    # if cpu difficulty is 2 or greater always pick a winning or blocking move, else just random move
+    # cpu always picks move with most flips
     def __getMoveCPU(self):        
-        if self.difficulty >= 2:
-            self.__makeMoveWin()
+        opp = "B" if self.turn == "W" else "W"
 
-        # choose random coord if Easy or not winning move for Medium/Hard
-        if self.difficulty == 1 or self.Y == self.boardSize:
-            X = random.randrange(self.boardSize)
-            Y = random.randrange(self.boardSize)
-            while (not(self.board.validateMove(self.turn, [Y, X]))):
-                X = random.randrange(self.boardSize)
-                Y = random.randrange(self.boardSize)
-            self.X = X
-            self.Y = Y
+        # Get locations of pieces for turn
+        oppList = [[y,x] for y in range(self.boardSize) for x in range(self.boardSize) if self.board.GameBoard[y][x] == self.turn]
 
-    # always have cpu pick coord to win or block a win
-    def __makeMoveWin(self):
-        X = Y = self.boardSize
-        XCountR = OCountR = BCountR = 0
-        XCountL = OCountL = BCountL = 0
+        # for each existing piece, navigagte all directions and see if there is valid move
+        # and store number of flips for that move
+        for p in oppList:
+            Y = p[0]
+            X = p[1]
+            
+            # loop through all directions
+            for coordDir in self.board.DirList:
+                Yinc = int(coordDir[0])
+                Xinc = int(coordDir[1])
 
-        for i in range(self.boardSize):
-            #check horizontal
-            if (self.board.GameBoard[i].count(self.delimeter) == 1 and (self.board.GameBoard[i].count('O') == self.boardSize - 1 or (self.board.GameBoard[i].count('X') == self.boardSize - 1))):
-                Y = i
-                X = self.board.GameBoard[i].index(self.delimeter)
+                flips = 0
+                myPieceFound = False        
 
-            #check vertical
-            if (self.board.GameBoardT[i].count(self.delimeter) == 1 and (self.board.GameBoardT[i].count('O') == self.boardSize - 1 or (self.board.GameBoardT[i].count('X') == self.boardSize - 1))):
-                Y = self.board.GameBoardT[i].index(self.delimeter)
-                X = i
+                for i in range(1, self.boardSize-1):
+                    # set coordinate to check based on direction and incrementer
+                    Yj = (i * Yinc if Yinc != 0 else 0) + Y
+                    Xj = (i * Xinc if Xinc != 0 else 0) + X
 
-            #check diagonal right
-            if self.board.GameBoard[i][i] == 'X':
-                XCountR += 1
-            elif self.board.GameBoard[i][i] == 'O':
-                OCountR += 1
-            else:
-                BlankR = [i, i]
-                BCountR += 1
+                    # make sure we are within board dimensions
+                    if Yj < self.boardSize and Xj < self.boardSize:
+                        # if peice is opponent save it to flip later
+                        if self.board.GameBoard[Yj][Xj] == opp:
+                            flips+=1
+                        # if first piece isnt opponent or piece belongs to turn
+                        elif i == 1 or self.board.GameBoard[Yj][Xj] == self.turn:
+                            break
+                        # found blank so we have valid move
+                        else:
+                            myPieceFound = True
+                            break
 
-            #check diagonal left
-            XCoord = self.boardSize - 1 - i
-            if self.board.GameBoard[XCoord][i] == 'X':
-                XCountL += 1
-            elif self.board.GameBoard[XCoord][i] == 'O':
-                OCountL += 1
-            else:
-                BlankL = [XCoord, i]
-                BCountL += 1
+                # add piece coord from this direction to master list and assign num of flips  
+                if myPieceFound:                  
+                    strXY = "{},{}".format(str(Yj),str(Xj))
+                    if strXY not in self.__cpuMoves:
+                        self.__cpuMoves[strXY] = flips
+                    else:
+                        self.__cpuMoves[strXY] = int(self.__cpuMoves[strXY]) + flips
 
-        if BCountR == 1 and ((XCountR == self.boardSize - 1) or (OCountR == self.boardSize - 1)):
-            Y = BlankR[0]
-            X = BlankR[1]
-        elif BCountL == 1 and ((XCountL == self.boardSize - 1) or (OCountL == self.boardSize - 1)):
-            Y = BlankL[0]
-            X = BlankL[1]
+        # find move with most flips
+        cpuMove = [move for move in self.__cpuMoves if self.__cpuMoves[move] ==  max(self.__cpuMoves.values())]
+        cpuMoveCoord = cpuMove[0]
 
-        self.X = X
-        self.Y = Y
+        self.Y = int(cpuMoveCoord[0])
+        self.X = int(cpuMoveCoord[2])
 
 if __name__ == '__main__':
     myTTT = Othello()

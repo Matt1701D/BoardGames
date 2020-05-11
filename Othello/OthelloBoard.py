@@ -1,4 +1,5 @@
 from Board import Board
+import sys
 
 class OthelloBoard(Board):
 
@@ -9,8 +10,7 @@ class OthelloBoard(Board):
         self.__tmpMove = []
 
         dirCoord = [-1,0,1]
-        self.__dirList = [[x,y] for x in dirCoord for y in dirCoord]
-        self.__dirList.remove([0,0])
+        self.__dirList = [[x,y] for x in dirCoord for y in dirCoord if [x,y] != [0,0]]
 
         self._initBoard()
 
@@ -19,6 +19,10 @@ class OthelloBoard(Board):
     @property
     def PieceCount(self):
         return self.__pieceCount
+
+    @property
+    def DirList(self):
+        return self.__dirList
 
     @staticmethod
     def Opp(turn):
@@ -94,9 +98,11 @@ class OthelloBoard(Board):
 
             # do the flips and update counters
             for p in self.__tmpMove:
-                self._gameBoard[p[0]][p[1]] = turn
+                Yp = p[0]
+                Xp = p[1]
+                self._gameBoard[Yp][Xp] = turn
                 self.__pieceCount[turn] = int(self.__pieceCount[turn]) + 1
-                self.__pieceCount[opp] = int(self.__pieceCount[opp]) - 1
+                self.__pieceCount[opp] = int(self.__pieceCount[opp]) - 1                   
 
             # reset master flip list
             self.__tmpMove = []
@@ -132,3 +138,4 @@ class OthelloBoard(Board):
         # add flips from this direction to master list of flips
         if myPieceFound and tmpMove:
             self.__tmpMove.extend(tmpMove)
+
