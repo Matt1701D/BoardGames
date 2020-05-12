@@ -1,5 +1,6 @@
 import unittest, copy
 from Othello.OthelloBoard import OthelloBoard
+from Othello.Othello import Othello
 
 class Test_Othello(unittest.TestCase):
     def test_ValidVertDown(self):
@@ -176,16 +177,16 @@ class Test_Othello(unittest.TestCase):
         myBoard.PieceCount["W"] = 10
         myBoard.PieceCount["B"] = 9
         myBoard.PieceCount["_"] = 45
-        expBoard = copy.deepcopy(myBoard.GameBoard)
 
-        expBoard[0] = ["_","_","_","_","_","_","_","_"]
-        expBoard[1] = ["_","_","_","_","_","_","_","_"]
-        expBoard[2] = ["_","_","_","_","_","W","_","_"]
-        expBoard[3] = ["W","_","W","W","W","_","_","_"]
-        expBoard[4] = ["_","W","W","W","W","_","_","_"]
-        expBoard[5] = ["W","W","W","W","W","_","_","_"]
-        expBoard[6] = ["_","W","W","W","_","_","_","_"]
-        expBoard[7] = ["W","_","W","_","W","_","_","_"]
+        expBoard = []
+        expBoard.append(["_","_","_","_","_","_","_","_"])
+        expBoard.append(["_","_","_","_","_","_","_","_"])
+        expBoard.append(["_","_","_","_","_","W","_","_"])
+        expBoard.append(["W","_","W","W","W","_","_","_"])
+        expBoard.append(["_","W","W","W","W","_","_","_"])
+        expBoard.append(["W","W","W","W","W","_","_","_"])
+        expBoard.append(["_","W","W","W","_","_","_","_"])
+        expBoard.append(["W","_","W","_","W","_","_","_"])
         expCnt = {"B":0,"W":20,"_":44}
 
         #Act
@@ -225,7 +226,8 @@ class Test_Othello(unittest.TestCase):
         myBoard.GameBoard[7] = ["W","_","W","_","W","_","_","_"]
         myBoard.PieceCount["W"] = 10
         myBoard.PieceCount["B"] = 9
-        expWinner = 1
+        myBoard.PieceCount["_"] = 45
+        expWinner = "W"
 
         #Act
         myBoard.makeMove("W",[5,2])
@@ -234,22 +236,83 @@ class Test_Othello(unittest.TestCase):
         #Assert
         self.assertEqual(expWinner, actWinner)
 
-    def test_GameEnd(self):
+    def test_Winner2(self):
         #Arrange
         myBoard = OthelloBoard(8,"_")
-        #myBoard.GameBoard = [["B"]*8 for x in range(0,4)]
-        #myBoard.GameBoard.extend([["W"]*8 for x in range(0,4)])
-        myBoard.PieceCount["_"] = 0
-        myBoard.PieceCount["W"] = 32
-        myBoard.PieceCount["B"] = 32
-        expWinner = 2
+        myBoard.GameBoard[0] = ["B","B","B","B","B","B","W","W"]
+        myBoard.GameBoard[1] = ["B","B","B","B","B","B","W","W"]
+        myBoard.GameBoard[2] = ["B","W","B","B","B","B","W","W"]
+        myBoard.GameBoard[3] = ["W","B","B","W","B","B","W","W"]
+        myBoard.GameBoard[4] = ["W","W","W","W","B","B","W","W"]
+        myBoard.GameBoard[5] = ["B","W","W","W","W","B","W","B"]
+        myBoard.GameBoard[6] = ["B","B","W","W","W","W","B","_"]
+        myBoard.GameBoard[7] = ["B","B","B","B","B","B","B","B"]
+        myBoard.PieceCount["W"] = 25
+        myBoard.PieceCount["B"] = 38
+        myBoard.PieceCount["_"] = 1
+        expWinner = "B"
 
         #Act
-        #myBoard.makeMove("W",[5,2])
+        myBoard.makeMove("W",[6,7])
         actWinner = myBoard.checkWinner()
 
         #Assert
         self.assertEqual(expWinner, actWinner)
+
+    def test_GameEnd(self):
+        #Arrange
+        myBoard = OthelloBoard(8,"_")
+        myBoard.PieceCount["W"] = 32
+        myBoard.PieceCount["B"] = 32
+        myBoard.PieceCount["_"] = 0
+        expWinner = "D"
+
+        #Act
+        actWinner = myBoard.checkWinner()
+
+        #Assert
+        self.assertEqual(expWinner, actWinner)
+
+    def test_CPUMove(self):
+        self.maxDiff = None
+
+        #Arrange
+        myOT = Othello.init(1)
+        myOT.turn = "W"
+        myBoard = myOT.board
+        myBoard.GameBoard[0] = ["_","_","_","_","_","_","_","_"]
+        myBoard.GameBoard[1] = ["_","_","_","_","_","_","_","_"]
+        myBoard.GameBoard[2] = ["_","_","B","_","B","_","_","_"]
+        myBoard.GameBoard[3] = ["_","_","_","B","B","_","_","_"]
+        myBoard.GameBoard[4] = ["_","_","B","B","W","W","_","_"]
+        myBoard.GameBoard[5] = ["_","_","_","W","_","_","_","_"]
+        myBoard.GameBoard[6] = ["_","_","_","_","_","_","_","_"]
+        myBoard.GameBoard[7] = ["_","_","_","_","_","_","_","_"]
+        myBoard.PieceCount["_"] = 55
+        myBoard.PieceCount["W"] = 3
+        myBoard.PieceCount["B"] = 6
+
+        expBoard = []
+        expBoard.append(["_","_","_","_","_","_","_","_"])
+        expBoard.append(["_","_","_","_","_","_","_","_"])
+        expBoard.append(["_","_","B","W","B","_","_","_"])
+        expBoard.append(["_","_","_","W","W","_","_","_"])
+        expBoard.append(["_","_","B","W","W","W","_","_"])
+        expBoard.append(["_","_","_","W","_","_","_","_"])
+        expBoard.append(["_","_","_","_","_","_","_","_"])
+        expBoard.append(["_","_","_","_","_","_","_","_"])
+        expCnt = {"B":3,"W":7,"_":54}
+
+        #Act
+        myOT._getMoveCPU()
+        myOT.board.makeMove(myOT.turn, [myOT.Y, myOT.X])
+        actBoard = myOT.board.GameBoard
+        actCnt = myOT.board.PieceCount
+
+        #Assert
+        self.assertEqual(expBoard, actBoard, "An invalid move made a move")
+        self.assertEqual(expCnt, actCnt, "Invalid piece count")
+
         
 if __name__ == '__main__':
 

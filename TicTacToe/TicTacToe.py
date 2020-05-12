@@ -7,6 +7,8 @@ class TicTacToe(Game):
     turn = "X"
     delimeter = "_"
 
+    # CONSTRUCTORS
+
     #initialize game parameters through user input
     def __init__(self):   
         print("\nWelcome to Tic Tac Toe!")
@@ -42,9 +44,9 @@ class TicTacToe(Game):
         gameEnd = 0
         while(not(gameEnd)):
             if self.numPlayers == 2 or self.turn == "X":
-                self.__getMoveHuman()
+                self._getMoveHuman()
             else:
-                self.__getMoveCPU()
+                self._getMoveCPU()
 
             self.board.makeMove(self.turn, [self.Y, self.X])
             self.board.printBoard()
@@ -58,10 +60,8 @@ class TicTacToe(Game):
             else:
                 self.turn = "X" if self.turn == "O" else "O"
 
-    # PRIVATE METHODS
-
     # Player chooses next move
-    def __getMoveHuman(self):
+    def _getMoveHuman(self):
         success = 0
         while (not(success)):
             userInput = input("Enter coordinates for " + self.turn + ": ")
@@ -85,7 +85,7 @@ class TicTacToe(Game):
                     success = 1 
 
     # if cpu difficulty is 2 or greater always pick a winning or blocking move, else just random move
-    def __getMoveCPU(self):        
+    def _getMoveCPU(self):        
         if self.difficulty >= 2:
             self.__makeMoveWin()
 

@@ -14,6 +14,16 @@ class Game(ABC):
     def _playGame(self):
         pass
 
+    # Method to get a human player's move
+    @abstractmethod
+    def _getMoveHuman(self):
+        pass
+        
+    # Method to determine cpu move
+    @abstractmethod
+    def _getMoveCPU(self):
+        pass
+    
     # STATIC METHODS
 
     # User input methods for game parameters

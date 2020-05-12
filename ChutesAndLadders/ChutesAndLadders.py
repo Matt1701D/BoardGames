@@ -8,6 +8,8 @@ class ChutesAndLadders(Game):
     delimeter = "_"
     boardSize = 10
 
+    # CONSTRUCTOR
+
     #initialize game
     def __init__(self):
         print("\nWelcome to Chutes and Ladders!")
@@ -44,4 +46,12 @@ class ChutesAndLadders(Game):
                 print(self.players[self.turn] + " wins!\n")
             else:
                 self.turn = 0 if self.turn+1 > playerCnt-1 else self.turn+1
+
+    # Method to get a human player's move
+    def _getMoveHuman(self):
+        pass
+        
+    # Method to determine cpu move
+    def _getMoveCPU(self):
+        pass
 
