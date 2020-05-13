@@ -172,7 +172,6 @@ class Test_TicTacToe(unittest.TestCase):
         #Arrange
         myBoardSize = 3
         difficulty = 1
-        turn = "X"
 
         myTTT = TicTacToe.init(myBoardSize, difficulty, 2)
         myBoard = myTTT.board
@@ -194,7 +193,6 @@ class Test_TicTacToe(unittest.TestCase):
         #Arrange
         myBoardSize = 3
         difficulty = 3
-        turn = "X"
 
         myTTT = TicTacToe.init(myBoardSize, difficulty, 2)
         myBoard = myTTT.board

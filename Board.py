@@ -42,6 +42,11 @@ class Board(ABC):
     def checkWinner(self, turn=0):
         pass
 
+    # always have cpu pick coord to win or block a win.
+    @abstractmethod
+    def getBestMove(self, turn=0):
+        pass
+
     # Print out game board
     def printBoard(self):
         for row in self._gameBoard:

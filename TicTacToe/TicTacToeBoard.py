@@ -38,6 +38,51 @@ class TicTacToeBoard(Board):
             return 1
         else:
             return 0
+  
+    # always have cpu pick coord to win or block a win
+    def getBestMove(self):
+        X = Y = self._boardSize
+        XCountR = OCountR = BCountR = 0
+        XCountL = OCountL = BCountL = 0
+
+        for i in range(self._boardSize):
+            #check horizontal
+            if (self._gameBoard[i].count(self._delimeter) == 1 and (self._gameBoard[i].count('O') == self._boardSize - 1 or (self._gameBoard[i].count('X') == self._boardSize - 1))):
+                Y = i
+                X = self._gameBoard[i].index(self._delimeter)
+
+            #check vertical
+            if (self.__gameBoardTranspose[i].count(self._delimeter) == 1 and (self.__gameBoardTranspose[i].count('O') == self._boardSize - 1 or (self.__gameBoardTranspose[i].count('X') == self._boardSize - 1))):
+                Y = self.__gameBoardTranspose[i].index(self._delimeter)
+                X = i
+
+            #check diagonal right
+            if self._gameBoard[i][i] == 'X':
+                XCountR += 1
+            elif self._gameBoard[i][i] == 'O':
+                OCountR += 1
+            else:
+                BlankR = [i, i]
+                BCountR += 1
+
+            #check diagonal left
+            XCoord = self._boardSize - 1 - i
+            if self._gameBoard[XCoord][i] == 'X':
+                XCountL += 1
+            elif self._gameBoard[XCoord][i] == 'O':
+                OCountL += 1
+            else:
+                BlankL = [XCoord, i]
+                BCountL += 1
+
+        if BCountR == 1 and ((XCountR == self._boardSize - 1) or (OCountR == self._boardSize - 1)):
+            Y = BlankR[0]
+            X = BlankR[1]
+        elif BCountL == 1 and ((XCountL == self._boardSize - 1) or (OCountL == self._boardSize - 1)):
+            Y = BlankL[0]
+            X = BlankL[1]
+
+        return [Y,X]
         
     # PROTECTED METHODS
 
@@ -81,3 +126,4 @@ class TicTacToeBoard(Board):
             return 1
         else:
             return 0
+

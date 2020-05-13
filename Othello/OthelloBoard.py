@@ -8,7 +8,6 @@ class OthelloBoard(Board):
 
         self.__pieceCount = {"B":2,"W":2,str(self._delimeter):(self._boardSize**2)-4}
         self.__tmpMove = []
-        self.__cpuMoves = []
 
         dirCoord = [-1,0,1]
         self.__dirList = [[x,y] for x in dirCoord for y in dirCoord if [x,y] != [0,0]]
@@ -20,10 +19,6 @@ class OthelloBoard(Board):
     @property
     def PieceCount(self):
         return self.__pieceCount
-
-    @property
-    def DirList(self):
-        return self.__dirList
 
     @staticmethod
     def Opp(turn):
@@ -47,12 +42,12 @@ class OthelloBoard(Board):
             
                 # check all directions for flips
                 for dir in self.__dirList:
-                    tmpMove = self.isValidMoveDir(Y, X, dir, opp)
+                    tmpMove = self.__isValidMoveDir(Y, X, dir, opp)
 
                     if tmpMove:
                         self.__tmpMove.extend(tmpMove)
 
-                return False if not self.__tmpMove else True
+                return True if self.__tmpMove else False
 
     # investigate chosen move and update if valid
     def makeMove(self, turn, coord):
@@ -81,8 +76,78 @@ class OthelloBoard(Board):
         print("\n")
         print("White = {}, Black = {}, Blank = {}".format(self.__pieceCount["W"], self.__pieceCount["B"], self.__pieceCount[self._delimeter]))
 
+    # determine best move based on most flips
+    def getBestMove(self, turn):
+        bestMoves = {}
+        opp = self.Opp(turn)
+
+        # List of all available spots to make a move
+        blankList = [[y,x] for y in range(self._boardSize) for x in range(self._boardSize) if self._gameBoard[y][x] == self._delimeter]
+
+        for b in blankList:
+            Y = b[0]
+            X = b[1]
+            strXY = "{},{}".format(str(Y),str(X))
+
+            # look in all directions of each possible move to count number of flips
+            for coordDir in self.__dirList:
+                tmpMove = self.__isValidMoveDir(Y, X, coordDir, opp)
+
+                # add piece coord from this direction to master list and assign num of flips  
+                if tmpMove:                                   
+                    if strXY not in bestMoves:
+                        bestMoves[strXY] = len(tmpMove)
+                    else:
+                        bestMoves[strXY] = int(bestMoves[strXY]) + len(tmpMove)
+
+        # find move with most flips
+        bestMove = [move for move in bestMoves if bestMoves[move] ==  max(bestMoves.values())]
+        bestMoveCoord = bestMove[0]
+
+        Y = int(bestMoveCoord[0])
+        X = int(bestMoveCoord[2])
+
+        return [Y,X]
+    
+    # PROTECTED METHODS
+
+    def _initBoard(self):
+        super()._initBoard(1)
+
+        # Half board size
+        hB = int(self._boardSize / 2)
+
+        # set initial position
+        self._gameBoard[hB-1][hB-1] = self._gameBoard[hB][hB] = "W"
+        self._gameBoard[hB-1][hB] = self._gameBoard[hB][hB-1] = "B"
+
+    # update gameBoard
+    def _updateBoard(self, coord, turn, isNewPos=False):
+        if self.__tmpMove:
+            Y = int(coord[0])
+            X = int(coord[1])
+            opp = self.Opp(turn)
+
+            # set chosen spot and update counters
+            self._gameBoard[Y][X] = turn
+            self.__pieceCount[turn] = int(self.__pieceCount[turn]) + 1
+            self.__pieceCount[self._delimeter] = int(self.__pieceCount[self._delimeter]) - 1
+
+            # do the flips and update counters
+            for p in self.__tmpMove:
+                Yp = p[0]
+                Xp = p[1]
+                self._gameBoard[Yp][Xp] = turn
+                self.__pieceCount[turn] = int(self.__pieceCount[turn]) + 1
+                self.__pieceCount[opp] = int(self.__pieceCount[opp]) - 1                   
+
+            # reset master flip list
+            self.__tmpMove = []
+
+    # PRIVATE METHODS
+
     # Check direction for valid move
-    def isValidMoveDir(self, Y, X, coordDir, opp):
+    def __isValidMoveDir(self, Y, X, coordDir, opp):
         Yinc = int(coordDir[0])
         Xinc = int(coordDir[1])
 
@@ -108,40 +173,4 @@ class OthelloBoard(Board):
                     break
 
         return tmpMove if myPieceFound else []
-    
-    # PROTECTED METHODS
-
-    def _initBoard(self):
-        super()._initBoard(1)
-
-        # set initial position
-        self._gameBoard[3][3] = self._gameBoard[4][4] = "W"
-        self._gameBoard[3][4] = self._gameBoard[4][3] = "B"
-
-        self.__cpuMoves.extend([[2,4],[4,2],[3,5],[5,3]])
-
-    # update gameBoard
-    def _updateBoard(self, coord, turn, isNewPos=False):
-        if self.__tmpMove:
-            Y = int(coord[0])
-            X = int(coord[1])
-            opp = self.Opp(turn)
-
-            # set chosen spot and update counters
-            self._gameBoard[Y][X] = turn
-            self.__pieceCount[turn] = int(self.__pieceCount[turn]) + 1
-            self.__pieceCount[self._delimeter] = int(self.__pieceCount[self._delimeter]) - 1
-
-            # do the flips and update counters
-            for p in self.__tmpMove:
-                Yp = p[0]
-                Xp = p[1]
-                self._gameBoard[Yp][Xp] = turn
-                self.__pieceCount[turn] = int(self.__pieceCount[turn]) + 1
-                self.__pieceCount[opp] = int(self.__pieceCount[opp]) - 1                   
-
-            # reset master flip list
-            self.__tmpMove = []
-
-
 

@@ -48,6 +48,10 @@ class ChutesAndLaddersBoard(Board):
     def checkWinner(self,turn):
         return self.__player_loc[turn] == 100
 
+    # get best cpu move
+    def getBestMove(self, turn):
+        pass
+
     # PROTECTED METHODS
 
     # initialize the game board and players

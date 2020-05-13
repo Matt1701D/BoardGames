@@ -86,93 +86,12 @@ class Othello(Game):
                     self.Y = int(Y)
                     success = 1 
     
+    # get CPU move
     def _getMoveCPU(self):
-        cpuMoves = {}
-        opp = "B" if self.turn == "W" else "W"
-
-        # List of all available spots to make a move
-        blankList = [[y,x] for y in range(self.boardSize) for x in range(self.boardSize) if self.board.GameBoard[y][x] == self.delimeter]
-
-        for b in blankList:
-            Y = b[0]
-            X = b[1]
-            strXY = "{},{}".format(str(Y),str(X))
-
-            # look in all directions of each possible move to count number of flips
-            for coordDir in self.board.DirList:
-                tmpMove = self.board.isValidMoveDir(Y, X, coordDir, opp)
-
-                # add piece coord from this direction to master list and assign num of flips  
-                if tmpMove:                                   
-                    if strXY not in cpuMoves:
-                        cpuMoves[strXY] = len(tmpMove)
-                    else:
-                        cpuMoves[strXY] = int(cpuMoves[strXY]) + len(tmpMove)
-
-        # find move with most flips
-        cpuMove = [move for move in cpuMoves if cpuMoves[move] ==  max(cpuMoves.values())]
-        cpuMoveCoord = cpuMove[0]
+        cpuMoveCoord = self.board.getBestMove(self.turn)
 
         self.Y = int(cpuMoveCoord[0])
-        self.X = int(cpuMoveCoord[2])
-
-    # cpu always picks move with most flips
-    def _getMoveCPUTwo(self):        
-        tmpMove = {}
-        opp = "B" if self.turn == "W" else "W"
-
-        # Get locations of pieces for turn
-        pieceList = [[y,x] for y in range(self.boardSize) for x in range(self.boardSize) if self.board.GameBoard[y][x] == self.turn]
-
-        blankList = [[y,x] for y in range(self.boardSize) for x in range(self.boardSize) if self.board.GameBoard[y][x] == self.delimeter]
-
-
-        # for each existing piece, navigagte all directions and see if there is valid move
-        # and store number of flips for that move
-        for p in pieceList:
-            Y = p[0]
-            X = p[1]
-            
-            # loop through all directions
-            for coordDir in self.board.DirList:
-                Yinc = int(coordDir[0])
-                Xinc = int(coordDir[1])
-
-                flips = 0
-                myPieceFound = False        
-
-                for i in range(1, self.boardSize-1):
-                    # set coordinate to check based on direction and incrementer
-                    Yj = (i * Yinc if Yinc != 0 else 0) + Y
-                    Xj = (i * Xinc if Xinc != 0 else 0) + X
-
-                    # make sure we are within board dimensions
-                    if Yj < self.boardSize and Xj < self.boardSize:
-                        # if peice is opponent save it to flip later
-                        if self.board.GameBoard[Yj][Xj] == opp:
-                            flips+=1
-                        # if first piece isnt opponent or piece belongs to turn
-                        elif i == 1 or self.board.GameBoard[Yj][Xj] == self.turn:
-                            break
-                        # found blank so we have valid move
-                        else:
-                            myPieceFound = True
-                            break
-
-                # add piece coord from this direction to master list and assign num of flips  
-                if myPieceFound:                  
-                    strXY = "{},{}".format(str(Yj),str(Xj))
-                    if strXY not in tmpMove:
-                        tmpMove[strXY] = flips
-                    else:
-                        tmpMove[strXY] = int(tmpMove[strXY]) + flips
-
-        # find move with most flips
-        cpuMove = [move for move in tmpMove if tmpMove[move] ==  max(tmpMove.values())]
-        cpuMoveCoord = cpuMove[0]
-
-        self.Y = int(cpuMoveCoord[0])
-        self.X = int(cpuMoveCoord[2])
+        self.X = int(cpuMoveCoord[1])
 
 if __name__ == '__main__':
     myTTT = Othello()
