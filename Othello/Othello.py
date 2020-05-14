@@ -9,32 +9,39 @@ class Othello(Game):
 
     # CONSTRUCTORS
 
-    def __init__(self):
+    def __init__(self, **kwargs):
         print("\nWelcome to Othello!")
-        super().__init__(Othello.turn, Othello.boardSize, Othello.delimeter)
 
-        self.numPlayers = Game.getGameMode()
+        # cant do kwargs.get("gameMode", self.getGameMode()) because method still runs to get default value
+        self.numPlayers = self.getGameMode() if kwargs.get("gameMode", None) == None else kwargs["gameMode"]     
 
-        tmpMove = {}
-        self.X = self.Y = -1
+        self._initGame()
 
-        self.board = OthelloBoard(self.boardSize,self.delimeter)
-
-        self._playGame()
+        if not kwargs:
+            self._playGame()
 
     # ClassMethod constructor that does not call __init__
     # used for testing to get around user input
-    # alternatively could use bit in __init__ to decide
-    # who is instantiating (test or user)
+    # alternatively could call in __init__ with optional args
     @classmethod
     def init(cls, numPlayers):
         objOT = cls.__new__(cls)
-        super(Othello, objOT).__init__(Othello.turn, Othello.boardSize, Othello.delimeter)
+        objOT.numPlayers = numPlayers
+        #super(Othello, objOT).__init__(Othello.turn, Othello.boardSize, Othello.delimeter)        
 
-        objOT.numPlayers = 2
-        objOT.board = OthelloBoard(Othello.boardSize, Othello.delimeter)
+        objOT._initGame()
 
         return objOT
+
+    # PRIVATE METHODS
+
+    # Method to init game parameters common to all constructors
+    def _initGame(self):
+        super().__init__(Othello.turn, Othello.boardSize, Othello.delimeter)
+        self.board = OthelloBoard(self.boardSize,self.delimeter)
+
+        self._addPlayer("B","Black")
+        self._addPlayer("W","White")
 
     # PROTECTED METHODS
 
@@ -45,12 +52,12 @@ class Othello(Game):
         gameEnd = 0
         while(not(gameEnd)):
             if self.numPlayers == 2 or self.turn == "B":
-                self._getMoveHuman()
+                coord = self._getMoveHuman()
             else:
-                self._getMoveCPU()
-                print("{} placed piece at {} {}\n".format(self.turn, self.Y, self.X))
+                coord = self._getMoveCPU()
+                print("{} placed piece at {} {}\n".format(self.players[self.turn], coord[0], coord[1]))
 
-            self.board.makeMove(self.turn, [self.Y, self.X])
+            self.board.makeMove(self.turn, coord)
             self.board.printBoard()
 
             gameEnd = self.board.checkWinner()
@@ -58,15 +65,15 @@ class Othello(Game):
             if gameEnd == "D":
                 print("It's a DRAW!\n")
             elif gameEnd:
-                print(gameEnd + " WINS!\n")
+                print(self.players[gameEnd] + " WINS!\n")
             else:
-                self.turn = "B" if self.turn == "W" else "W"
+                self.turn = self.board.Opp(self.turn)
     
     # Player chooses next move
     def _getMoveHuman(self):
         success = 0
         while (not(success)):
-            userInput = input("Enter coordinates for " + self.turn + ": ")
+            userInput = input("Enter coordinates for " + self.players[self.turn] + ": ")
             coord = userInput.split()
 
             if len(coord) != 2:
@@ -81,17 +88,14 @@ class Othello(Game):
                     print("Second coordinate isnt an integer or less than " + str(self.boardSize))
                 elif (not(self.board.validateMove(self.turn, coord))):
                     print("Invalid move at coordinates:" + str(coord))
-                else:
-                    self.X = int(X)
-                    self.Y = int(Y)
+                else:                    
                     success = 1 
+
+        return coord
     
     # get CPU move
     def _getMoveCPU(self):
-        cpuMoveCoord = self.board.getBestMove(self.turn)
-
-        self.Y = int(cpuMoveCoord[0])
-        self.X = int(cpuMoveCoord[1])
+        return self.board.getBestMove(self.turn)
 
 if __name__ == '__main__':
     myTTT = Othello()

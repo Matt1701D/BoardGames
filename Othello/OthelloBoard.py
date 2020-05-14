@@ -11,6 +11,7 @@ class OthelloBoard(Board):
 
         dirCoord = [-1,0,1]
         self.__dirList = [[x,y] for x in dirCoord for y in dirCoord if [x,y] != [0,0]]
+        self.__cornerList = [[0,0],[0,self._boardSize-1],[self._boardSize-1,0],[self._boardSize-1,self._boardSize-1]]
 
         self._initBoard()
 
@@ -87,7 +88,7 @@ class OthelloBoard(Board):
         for b in blankList:
             Y = b[0]
             X = b[1]
-            strXY = "{},{}".format(str(Y),str(X))
+            strYX = "{},{}".format(str(Y),str(X))
 
             # look in all directions of each possible move to count number of flips
             for coordDir in self.__dirList:
@@ -95,19 +96,24 @@ class OthelloBoard(Board):
 
                 # add piece coord from this direction to master list and assign num of flips  
                 if tmpMove:                                   
-                    if strXY not in bestMoves:
-                        bestMoves[strXY] = len(tmpMove)
+                    if strYX not in bestMoves:
+                        bestMoves[strYX] = len(tmpMove)
                     else:
-                        bestMoves[strXY] = int(bestMoves[strXY]) + len(tmpMove)
+                        bestMoves[strYX] = int(bestMoves[strYX]) + len(tmpMove)
 
-        # find move with most flips
-        bestMove = [move for move in bestMoves if bestMoves[move] ==  max(bestMoves.values())]
-        bestMoveCoord = bestMove[0]
+        # find move with most flips, choosing corner move with highest priority
+        cornerMoves = {}
+        for move in bestMoves:
+            moveKey = [int(move[0]),int(move[2])]
+            if moveKey in self.__cornerList:
+                cornerMoves[move] = bestMoves[move]
 
-        Y = int(bestMoveCoord[0])
-        X = int(bestMoveCoord[2])
+        if cornerMoves:
+            bestMove = [[int(move[0]),int(move[2])] for move in cornerMoves if cornerMoves[move] ==  max(cornerMoves.values())]
+        else:            
+            bestMove = [[int(move[0]),int(move[2])] for move in bestMoves if bestMoves[move] ==  max(bestMoves.values())]
 
-        return [Y,X]
+        return bestMove[0]
     
     # PROTECTED METHODS
 

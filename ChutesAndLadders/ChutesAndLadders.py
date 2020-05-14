@@ -12,15 +12,19 @@ class ChutesAndLadders(Game):
 
     #initialize game
     def __init__(self):
-        print("\nWelcome to Chutes and Ladders!")
+        print("\nWelcome to Chutes and Ladders!")      
+        self.maxSpin = 6        
+
         super().__init__(ChutesAndLadders.turn, ChutesAndLadders.boardSize, ChutesAndLadders.delimeter)
-
-        self.maxSpin = 6
-        self.players = Game.getPlayers()
-
+        self.getPlayers()
         self.board = ChutesAndLaddersBoard(self.boardSize, self.delimeter, len(self.players))
 
         self._playGame()
+
+    # PRIVATE METHODS
+
+    def _initGame(self):
+        pass
 
     # PROTECTED METHODS
 

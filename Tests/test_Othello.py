@@ -275,9 +275,10 @@ class Test_Othello(unittest.TestCase):
 
     def test_CPUMove(self):
         self.maxDiff = None
+        gameMode = 2
 
         #Arrange
-        myOT = Othello.init(1)
+        myOT = Othello(gameMode=gameMode)
         myOT.turn = "W"
         myBoard = myOT.board
         myBoard.GameBoard[0] = ["_","_","_","_","_","_","_","_"]
@@ -304,8 +305,8 @@ class Test_Othello(unittest.TestCase):
         expCnt = {"B":3,"W":7,"_":54}
 
         #Act
-        myOT._getMoveCPU()
-        myOT.board.makeMove(myOT.turn, [myOT.Y, myOT.X])
+        coord = myOT._getMoveCPU()
+        myOT.board.makeMove(myOT.turn, coord)
         actBoard = myOT.board.GameBoard
         actCnt = myOT.board.PieceCount
 
@@ -313,6 +314,46 @@ class Test_Othello(unittest.TestCase):
         self.assertEqual(expBoard, actBoard, "An invalid move made a move")
         self.assertEqual(expCnt, actCnt, "Invalid piece count")
 
+    def test_CPUMoveCorner(self):
+        self.maxDiff = None
+        gameMode = 2
+
+        #Arrange
+        myOT = Othello(gameMode=gameMode)
+        myOT.turn = "W"
+        myBoard = myOT.board
+        myBoard.GameBoard[0] = ["_","_","_","_","_","_","_","_"]
+        myBoard.GameBoard[1] = ["_","B","_","_","_","_","_","_"]
+        myBoard.GameBoard[2] = ["_","_","B","_","B","W","_","_"]
+        myBoard.GameBoard[3] = ["_","_","_","W","B","_","_","_"]
+        myBoard.GameBoard[4] = ["_","B","B","B","B","B","W","_"]
+        myBoard.GameBoard[5] = ["_","_","B","W","_","_","_","_"]
+        myBoard.GameBoard[6] = ["_","B","_","_","_","_","_","_"]
+        myBoard.GameBoard[7] = ["_","_","_","_","_","_","_","_"]
+        myBoard.PieceCount["_"] = 50
+        myBoard.PieceCount["W"] = 3
+        myBoard.PieceCount["B"] = 11
+
+        expBoard = []
+        expBoard.append(["_","_","_","_","_","_","_","_"])
+        expBoard.append(["_","B","_","_","_","_","_","_"])
+        expBoard.append(["_","_","B","_","B","W","_","_"])
+        expBoard.append(["_","_","_","W","W","_","_","_"])
+        expBoard.append(["_","B","B","W","B","B","W","_"])
+        expBoard.append(["_","_","W","W","_","_","_","_"])
+        expBoard.append(["_","W","_","_","_","_","_","_"])
+        expBoard.append(["W","_","_","_","_","_","_","_"])
+        expCnt = {"B":7,"W":8,"_":49}
+
+        #Act
+        coord = myOT._getMoveCPU()
+        myOT.board.makeMove(myOT.turn, coord)
+        actBoard = myOT.board.GameBoard
+        actCnt = myOT.board.PieceCount
+
+        #Assert
+        self.assertEqual(expBoard, actBoard, "An invalid move made a move")
+        self.assertEqual(expCnt, actCnt, "Invalid piece count")
         
 if __name__ == '__main__':
 

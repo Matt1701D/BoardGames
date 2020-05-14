@@ -6,8 +6,35 @@ class Game(ABC):
         self.turn = turn
         self.boardSize = boardSize
         self.delimeter = delimeter
+        self.players = {}
+
+    # PUBLIC METHODS
+
+    def getPlayers(self):
+        players = []
+        playersSuccess = False
+        while(not playersSuccess):
+            players = input("Enter unique name for players separated by comma: ")
+            players = players.split(', ')
+            if len(players) == len(set(players)):
+                playersSuccess = True
+            else:
+                print("Player names not unique!")
+
+        p = 0
+        for player in players:
+            self._addPlayer(p, player)
+            p +=1
 
     # PROTECTED METHODS
+
+    def _addPlayer(self, playerKey, playerName):
+        self.players[playerKey] = playerName
+
+    # Method to init game parameters common to all constructors
+    @abstractmethod
+    def _initGame(self):
+        pass
 
     # Method to perform gameplay operations
     @abstractmethod
@@ -71,16 +98,3 @@ class Game(ABC):
                 success = 1
         return int(numPlayers)
 
-    @staticmethod
-    def getPlayers():
-        players = []
-        playersSuccess = False
-        while(not playersSuccess):
-            players = input("Enter unique name for players separated by comma: ")
-            players = players.split(',')
-            if len(players) == len(set(players)):
-                playersSuccess = True
-            else:
-                print("Player names not unique!")
-        
-        return players
