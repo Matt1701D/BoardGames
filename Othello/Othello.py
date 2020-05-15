@@ -55,7 +55,8 @@ class Othello(Game):
                 coord = self._getMoveHuman()
             else:
                 coord = self._getMoveCPU()
-                print("{} placed piece at {} {}\n".format(self.players[self.turn], coord[0], coord[1]))
+
+            print("{} placed piece at {} {}\n".format(self.players[self.turn], coord[0], coord[1]))
 
             self.board.makeMove(self.turn, coord)
             self.board.printBoard()

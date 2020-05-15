@@ -21,10 +21,8 @@ class Game(ABC):
             else:
                 print("Player names not unique!")
 
-        p = 0
-        for player in players:
-            self._addPlayer(p, player)
-            p +=1
+        for idx, player in enumerate(players):
+            self._addPlayer(idx, player)
 
     # PROTECTED METHODS
 

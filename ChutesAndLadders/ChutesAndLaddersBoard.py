@@ -125,4 +125,4 @@ class ChutesAndLaddersBoard(Board):
 
         return [y, x]
 
-        
+      
