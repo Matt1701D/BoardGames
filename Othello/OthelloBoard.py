@@ -1,4 +1,5 @@
 from Board import Board
+from operator import itemgetter
 import sys
 
 class OthelloBoard(Board):
@@ -11,7 +12,6 @@ class OthelloBoard(Board):
 
         dirCoord = [-1,0,1]
         self.__dirList = [[x,y] for x in dirCoord for y in dirCoord if [x,y] != [0,0]]
-        self.__cornerList = [[0,0],[0,self._boardSize-1],[self._boardSize-1,0],[self._boardSize-1,self._boardSize-1]]
         self.__cornerTup = ((0,0),(0,self._boardSize-1),(self._boardSize-1,0),(self._boardSize-1,self._boardSize-1))
 
         self._initBoard()
@@ -80,7 +80,7 @@ class OthelloBoard(Board):
 
     # determine best move based on most flips
     def getBestMove(self, turn):
-        bestMoves = cornerMoves = {}
+        bestMoves = {}
         opp = self.Opp(turn)
 
         # List of all available spots to make a move, using tuple here as dict key since dict key cant be mutable so no list
@@ -96,20 +96,11 @@ class OthelloBoard(Board):
                     if b not in bestMoves:
                         bestMoves[b] = len(tmpMove)
                     else:
-                        bestMoves[b] = int(bestMoves[b]) + len(tmpMove)
-                        
-                    # keep track if move is a corner piece
-                    if b in self.__cornerTup:
-                        if b not in cornerMoves:
-                            cornerMoves[b] = len(tmpMove)
-                        else:
-                            cornerMoves[b] = int(cornerMoves[b]) + len(tmpMove)
+                        bestMoves[b] = int(bestMoves[b]) + len(tmpMove)                       
 
         # find move with most flips, choosing corner move with highest priority
-        if cornerMoves:
-            bestMove = [list(move) for move in cornerMoves if cornerMoves[move] ==  max(cornerMoves.values())]
-        else:            
-            bestMove = [list(move) for move in bestMoves if bestMoves[move] ==  max(bestMoves.values())]
+        bestMove = sorted(bestMoves.items(), key=self.__sortBestMove, reverse=True)[0]                 
+        #bestMove = [list(move) for move in bestMoves if bestMoves[move] ==  max(bestMoves.values())]
 
         return bestMove[0]
     
@@ -149,6 +140,14 @@ class OthelloBoard(Board):
             self.__tmpMove = []
 
     # PRIVATE METHODS
+
+    # Sorting method to return move with most flips for corner moves first else other moves
+    # added boardsize^2 since no move could have more than that num of flips
+    def __sortBestMove(self,move):        
+        if move[0] in self.__cornerTup:
+            return move[1] + (self._boardSize*2)
+        else:
+            return move[1]
 
     # Check direction for valid move
     def __isValidMoveDir(self, coord, coordDir, opp):
