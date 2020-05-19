@@ -8,11 +8,23 @@ class Test_BoardGames(unittest.TestCase):
         expCount = 1
 
         #Act
-        GameFactory.registerGame(1,"Test")
+        GameFactory.registerGame("test")
         actCount = len(GameFactory.games)
 
         #Assert
         self.assertEqual(actCount,expCount,"Wrong count of board games")
+
+    def test_LoadGame(self):
+        #Arrange
+        expGame = "ChutesAndLadders"
+
+        #Act
+        GameFactory.registerGame(expGame)
+        actGame = GameFactory.getGame(0)
+
+        #Assert
+        self.assertEqual(actGame,expGame,"Game name not correct")
+        self.assertIn(expGame, globals(),"Could not find game class")
 
 if __name__ == '__main__':
     unittest.main()
