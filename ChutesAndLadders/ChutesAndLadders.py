@@ -21,12 +21,10 @@ class ChutesAndLadders(Game):
 
         self._playGame()
 
-    # PRIVATE METHODS
+    # PROTECTED METHODS
 
     def _initGame(self):
         pass
-
-    # PROTECTED METHODS
 
     #have players spin and move
     def _playGame(self):
@@ -59,3 +57,5 @@ class ChutesAndLadders(Game):
     def _getMoveCPU(self):
         pass
 
+if __name__ == '__main__':
+    ChutesAndLadders()

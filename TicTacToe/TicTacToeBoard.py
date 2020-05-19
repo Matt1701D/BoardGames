@@ -2,6 +2,8 @@ from Board import Board
 
 class TicTacToeBoard(Board):
 
+    # CONSTRUCTOR
+
     def __init__(self, boardSize, delimeter):
         super().__init__(boardSize, delimeter)
 
@@ -27,7 +29,7 @@ class TicTacToeBoard(Board):
     # store turn in board and transposed board
     def makeMove(self, turn, coord):
         if self.validateMove(turn, coord):
-            self._updateBoard(coord, turn)
+            self._updateBoard(turn, coord)
             self.__turnsTaken+=1
 
     # check for winner
@@ -91,7 +93,7 @@ class TicTacToeBoard(Board):
         super()._initBoard(1)
         self.__gameBoardTranspose = [[self._delimeter] * self._boardSize for x in range(self._boardSize)]
 
-    def _updateBoard(self, coord, turn, isNewPos=False):
+    def _updateBoard(self, turn, coord, isNewPos=False):
         Y = int(coord[0])
         X = int(coord[1])
         self._gameBoard[Y][X] = turn

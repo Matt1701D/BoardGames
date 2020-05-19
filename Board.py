@@ -1,11 +1,11 @@
-from abc import ABC, abstractmethod
+from abc import ABC, abstractmethod     # Abstract class module
 
 class Board(ABC):
 
     def __init__(self, boardSize, delimeter):
-        self._boardSize = boardSize
-        self._delimeter = delimeter
-        self._gameBoard = []
+        self._boardSize = boardSize     # Size of board, boards are squared
+        self._delimeter = delimeter     # delimter used in board printout for empty spaces
+        self._gameBoard = []            # the board itself as a list (will be 2-dim)
 
     # PROPERTIES
 
@@ -22,7 +22,7 @@ class Board(ABC):
 
     # update gameBoard
     @abstractmethod
-    def _updateBoard(self, move, turn, isNewPos=False):
+    def _updateBoard(self, turn, move, isNewPos=False):
         pass
 
     # PUBLIC METHODS

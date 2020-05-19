@@ -20,9 +20,9 @@ class Othello(Game):
         if not kwargs:
             self._playGame()
 
+    # DEPRECATED, use __init__ with kwargs, leaving for info purposes only
     # ClassMethod constructor that does not call __init__
     # used for testing to get around user input
-    # alternatively could call in __init__ with optional args
     @classmethod
     def init(cls, numPlayers):
         objOT = cls.__new__(cls)
@@ -33,7 +33,7 @@ class Othello(Game):
 
         return objOT
 
-    # PRIVATE METHODS
+    # PROTECTED METHODS
 
     # Method to init game parameters common to all constructors
     def _initGame(self):
@@ -42,8 +42,6 @@ class Othello(Game):
 
         self._addPlayer("B","Black")
         self._addPlayer("W","White")
-
-    # PROTECTED METHODS
 
     # get next move from user or generate for cpu until game has ended
     def _playGame(self):
@@ -99,4 +97,4 @@ class Othello(Game):
         return self.board.getBestMove(self.turn)
 
 if __name__ == '__main__':
-    myTTT = Othello()
+    Othello()

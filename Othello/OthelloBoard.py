@@ -4,6 +4,8 @@ import sys
 
 class OthelloBoard(Board):
 
+    # CONSTRUCTOR 
+
     def __init__(self, boardSize, delimeter):
         super().__init__(boardSize, delimeter)
 
@@ -54,7 +56,7 @@ class OthelloBoard(Board):
     # investigate chosen move and update if valid
     def makeMove(self, turn, coord):
         if self.validateMove(turn, coord):
-            self._updateBoard(coord, turn)
+            self._updateBoard(turn, coord)
 
     # check for winner
     def checkWinner(self):
@@ -117,7 +119,7 @@ class OthelloBoard(Board):
         self._gameBoard[hB-1][hB] = self._gameBoard[hB][hB-1] = "B"
 
     # update gameBoard
-    def _updateBoard(self, coord, turn, isNewPos=False):
+    def _updateBoard(self, turn, coord, isNewPos=False):
         if self.__tmpMove:
             Y = int(coord[0])
             X = int(coord[1])

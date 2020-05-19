@@ -2,12 +2,14 @@ from Board import Board
 
 class ChutesAndLaddersBoard(Board):
 
+    # CONSTRUCTOR
+
     def __init__(self, boardSize, delimeter, playerNum):
         super().__init__(boardSize, delimeter)
 
-        self.__playerNum = playerNum
-        self.__CandLmap = {}
-        self.__player_loc = {}
+        self.__playerNum = playerNum    # num of players in game
+        self.__CandLmap = {}            # map of chutes/ladders locations to destinations
+        self.__player_loc = {}          # map of player locations
 
         self._initBoard()
 
@@ -29,26 +31,26 @@ class ChutesAndLaddersBoard(Board):
         pos_current = self.__player_loc[turn]
         pos_new = 100 if pos_current + spin > 100 else pos_current + spin
 
-        # check for chute or ladder
+        # check for chute or ladder else keep same position
         pos_new = self.__CandLmap.get(pos_new,pos_new)
 
-        # remove old player location
+        # remove old player location if not first turn
         if pos_current > 0:
-            self._updateBoard(pos_current, turn, False)
+            self._updateBoard(turn, pos_current, False)
         
         # update player location
         self.__player_loc[turn] = pos_new
-        self._updateBoard(pos_new, turn, True)
+        self._updateBoard(turn, pos_new, True)
 
     # ensure move is valid
-    def validateMove(self, turn, coord):
-        pass
+    def validateMove(self, turn, position):
+        return position > 0 and position <= 100
 
     # check for winner
     def checkWinner(self,turn):
         return self.__player_loc[turn] == 100
 
-    # get best cpu move
+    # get best cpu move, no computer play in this game so just pass
     def getBestMove(self, turn):
         pass
 
@@ -56,6 +58,7 @@ class ChutesAndLaddersBoard(Board):
 
     # initialize the game board and players
     def _initBoard(self):
+        # set cell width according to number of players and taking into account chutes/ladders labels
         cellLength = 4 + self.__playerNum
         super()._initBoard(cellLength)
 
@@ -63,6 +66,7 @@ class ChutesAndLaddersBoard(Board):
         for i in range(self.__playerNum):
             self.__player_loc[i] = 0
         
+        # init our chutes and ladders locations and destinations
         self.__CandLmap = {1:38, 4:14, 9:31, 16:6, 21:42, 28:84, 36:44,
                             48:26, 49:11, 51:67, 56:53, 62:19, 64:60,
                             71:91, 80:100, 87:24, 93:73, 95:75, 98:78}
@@ -83,26 +87,29 @@ class ChutesAndLaddersBoard(Board):
                 labelValue = 'LT'+str(ladderCount)+delimString
                 ladderCount += 1
         
-            self._updateBoard(key, labelKey)
-            self._updateBoard(value, labelValue)
+            self._updateBoard(labelKey, key)
+            self._updateBoard(labelValue, value)
 
     # convert position into grid coordinates and update gameBoard
-    def _updateBoard(self,position,label,isNewPos=False):
+    def _updateBoard(self,label,position,isNewPos=False):
         gridCoord = self.__posToGrid(position)
         y = gridCoord[0]
         x = gridCoord[1]
 
-        # if updating previous player position, look for player number to replace, 
-        # else for new player position replace right most '-' with player number
+        # if setting player new or old position, else we are just setting chute/ladder lablel during init
         if str(label).isnumeric():
+            # if setting player's new position replace right most delimeter with player number 
+            # else updating player's former position so look for player number to remove
             if isNewPos:
                 delimeter = self._delimeter
             else:
                 delimeter = str(label)
                 label = self._delimeter
 
+            # get current label at this location so not to overwrite a chute/ladder label or another player
             labelCur = self._gameBoard[y][x]
 
+            # loop through cell contents until we find a spot to place the label
             playerFound = False
             cellLength = 4 + self.__playerNum
             while(not(playerFound)):

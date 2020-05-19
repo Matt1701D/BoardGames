@@ -23,10 +23,9 @@ class TicTacToe(Game):
         if not kwargs:
             self._playGame()
 
+    # DEPRECATED, use __init__ with kwargs, leaving for info purposes only
     # ClassMethod constructor that does not call __init__
     # used for testing to get around user input
-    # alternatively could use bit in __init__ to decide
-    # who is instantiating (test or user)
     @classmethod
     def init(cls, boardSize, difficulty, gameMode):
         objTTT = cls.__new__(cls)
@@ -39,7 +38,7 @@ class TicTacToe(Game):
 
         return objTTT
 
-    # PRIVATE METHODS
+    # PROTECTED METHODS
 
     # Method to init game parameters common to all constructors
     def _initGame(self):
@@ -48,8 +47,6 @@ class TicTacToe(Game):
 
         self._addPlayer("X","X")
         self._addPlayer("O","O")
-
-    # PROTECTED METHODS
 
     # get next move from user or generate for cpu until game has ended
     def _playGame(self):
@@ -113,5 +110,5 @@ class TicTacToe(Game):
         return coord
 
 if __name__ == '__main__':
-    myTTT = TicTacToe()
+    TicTacToe()
 

@@ -1,6 +1,12 @@
+# Game modules
 from ChutesAndLadders.ChutesAndLadders import ChutesAndLadders
 from TicTacToe.TicTacToe import TicTacToe
 from Othello.Othello import Othello
+
+# STEPS TO ADD NEW GAME
+#   0) Caveats: Make sure game module/class has same name as the game
+#   1) Add game module to import as "from Package.Module import className"
+#   2) Register game in main module using className of game
 
 class BoardGames(object):
 
@@ -8,8 +14,8 @@ class BoardGames(object):
     @staticmethod
     def ShowGameMenu():
         choiceOutput = "Type the number of the game you would like to play or Q to Quit\n"
-        for game in GameFactory.games:
-            choice = str(game) + ") " + GameFactory.games[game] + "\n"
+        for idx, game in enumerate(GameFactory.games):
+            choice = str(idx+1) + ") " + game + "\n"
             choiceOutput += choice 
         choiceOutput += "Q) Quit\n" 
 
@@ -21,34 +27,39 @@ class BoardGames(object):
                 break
             elif (not(game.isdigit())):
                 print("Choice is not a number")
-            elif int(game) not in GameFactory.games:   
+            elif int(game) > len(GameFactory.games) or int(game) < 1:  
                 print("Invalid choice")   
             else:
-                GameFactory.getGame(int(game))
+                gameClass = GameFactory.getGame(int(game)-1)
+                try:
+                    eval(gameClass)()
+                except Exception:
+                    print("Could not load game: {} Check the registered game name matches the game's class name and the module has been imported as \'from Package.Module import className\'.\n".format(gameClass))
 
 # Game Factory class for list of games to play
-# Register the game in BoardGames class and add
-# module import so that only className is needed
-# when registering game now (also used on user menu)
 class GameFactory(object):
-    games = {}
+    games = []  # our master games list
     
     @classmethod
-    def registerGame(cls, gameID, creator):
-        cls.games[gameID] = creator
+    # Add game to game list if not already registered and sort list
+    def registerGame(cls, game):
+        if game not in cls.games:
+            cls.games.append(game)
+            cls.games.sort()
 
     @classmethod
+    # Lookup game by sorted index and return name of game
     def getGame(cls, gameID):
         creator = cls.games[gameID]
         if not creator:
             raise Exception("Invalid gameID: {}".format(gameID))
-        return eval(creator)()
+        return creator
         
 if __name__ == '__main__':
-    # Register list of games using className 
-    GameFactory.registerGame(1, "TicTacToe")
-    GameFactory.registerGame(2, "ChutesAndLadders")
-    GameFactory.registerGame(3, "Othello")
+    # Register list of games using className here
+    GameFactory.registerGame("TicTacToe")
+    GameFactory.registerGame("ChutesAndLadders")
+    GameFactory.registerGame("Othello")
 
     BoardGames.ShowGameMenu()
 

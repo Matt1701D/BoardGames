@@ -1,15 +1,16 @@
-from abc import ABC, abstractmethod
+from abc import ABC, abstractmethod     # Abstract class module
 
 class Game(ABC):
 
     def __init__(self, turn, boardSize, delimeter):
-        self.turn = turn
-        self.boardSize = boardSize
-        self.delimeter = delimeter
-        self.players = {}
+        self.turn = turn                # whose first turn is it
+        self.boardSize = boardSize      # Size of board, boards are squared
+        self.delimeter = delimeter      # delimter used in board printout for empty spaces
+        self.players = {}               # dictionary of player keys (number) and labels (names)
 
     # PUBLIC METHODS
 
+    # Get player names as input
     def getPlayers(self):
         players = []
         playersSuccess = False
@@ -26,6 +27,7 @@ class Game(ABC):
 
     # PROTECTED METHODS
 
+    # register player
     def _addPlayer(self, playerKey, playerName):
         self.players[playerKey] = playerName
 
@@ -51,7 +53,7 @@ class Game(ABC):
     
     # STATIC METHODS
 
-    # User input methods for game parameters
+    # User input method for getting board size
     @staticmethod
     def getBoardSize(minSize=2, maxSize=10, oddSize=1):
         success = 0
@@ -70,6 +72,7 @@ class Game(ABC):
                 success = 1
         return int(boardSize)
 
+    # User input method for getting computer difficulty level
     @staticmethod
     def getDifficulty():
         success = 0
@@ -83,6 +86,7 @@ class Game(ABC):
                 success = 1
         return int(difficulty)
     
+    # User input method for getting human vs human or human vs cpu game mode
     @staticmethod
     def getGameMode():
         success = 0
