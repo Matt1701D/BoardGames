@@ -2,7 +2,7 @@ from abc import ABC, abstractmethod     # Abstract class module
 
 class Game(ABC):
 
-    def __init__(self, turn, boardSize, delimeter):
+    def __init__(self, turn, boardSize, delimeter='_'):
         self.turn = turn                # whose first turn is it
         self.boardSize = boardSize      # Size of board, boards are squared
         self.delimeter = delimeter      # delimter used in board printout for empty spaces

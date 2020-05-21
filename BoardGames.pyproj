@@ -34,6 +34,12 @@
     <Compile Include="Game.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="MyLogger\MyLogger.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MyLogger\__init__.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Othello\Othello.py">
       <SubType>Code</SubType>
     </Compile>
@@ -61,6 +67,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="ChutesAndLadders\" />
+    <Folder Include="MyLogger\" />
     <Folder Include="Othello\" />
     <Folder Include="TicTacToe\" />
     <Folder Include="Tests\" />
