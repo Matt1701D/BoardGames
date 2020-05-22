@@ -1,7 +1,9 @@
 from abc import ABC, abstractmethod     # Abstract class module
+from MyLogger.MyLogger import MyLogger  # Logger module
 
 class Game(ABC):
 
+    @MyLogger.log_decorator
     def __init__(self, turn, boardSize, delimeter='_'):
         self.turn = turn                # whose first turn is it
         self.boardSize = boardSize      # Size of board, boards are squared
@@ -11,6 +13,7 @@ class Game(ABC):
     # PUBLIC METHODS
 
     # Get player names as input
+    @MyLogger.log_decorator
     def getPlayers(self):
         players = []
         playersSuccess = False
@@ -28,6 +31,7 @@ class Game(ABC):
     # PROTECTED METHODS
 
     # register player
+    @MyLogger.log_decorator
     def _addPlayer(self, playerKey, playerName):
         self.players[playerKey] = playerName
 
@@ -55,6 +59,7 @@ class Game(ABC):
 
     # User input method for getting board size
     @staticmethod
+    @MyLogger.log_decorator
     def getBoardSize(minSize=2, maxSize=10, oddSize=1):
         success = 0
         while(not(success)):
@@ -74,6 +79,7 @@ class Game(ABC):
 
     # User input method for getting computer difficulty level
     @staticmethod
+    @MyLogger.log_decorator
     def getDifficulty():
         success = 0
         while(not(success)):
@@ -88,6 +94,7 @@ class Game(ABC):
     
     # User input method for getting human vs human or human vs cpu game mode
     @staticmethod
+    @MyLogger.log_decorator
     def getGameMode():
         success = 0
         while(not(success)):

@@ -1,9 +1,12 @@
+from MyLogger.MyLogger import MyLogger      # Logger module
+
 from Board import Board
 
 class TicTacToeBoard(Board):
 
     # CONSTRUCTOR
 
+    @MyLogger.log_decorator
     def __init__(self, boardSize, delimeter):
         super().__init__(boardSize, delimeter)
 
@@ -21,18 +24,21 @@ class TicTacToeBoard(Board):
     # PUBLIC METHODS
 
     # ensure move is valid
+    @MyLogger.log_decorator
     def validateMove(self, turn, coord):
         Y = int(coord[0])
         X = int(coord[1])
         return self._gameBoard[Y][X] == self._delimeter
 
     # store turn in board and transposed board
+    @MyLogger.log_decorator
     def makeMove(self, turn, coord):
         if self.validateMove(turn, coord):
             self._updateBoard(turn, coord)
             self.__turnsTaken+=1
 
     # check for winner
+    @MyLogger.log_decorator
     def checkWinner(self):
         if self.__turnsTaken == self._boardSize * self._boardSize:
             return 2
@@ -42,6 +48,7 @@ class TicTacToeBoard(Board):
             return 0
   
     # always have cpu pick coord to win or block a win
+    @MyLogger.log_decorator
     def getBestMove(self):
         X = Y = self._boardSize
         XCountR = OCountR = BCountR = 0
@@ -89,10 +96,12 @@ class TicTacToeBoard(Board):
     # PROTECTED METHODS
 
     #make transposed board to more quickly check for vertical moves and win
+    @MyLogger.log_decorator
     def _initBoard(self):
         super()._initBoard(1)
         self.__gameBoardTranspose = [[self._delimeter] * self._boardSize for x in range(self._boardSize)]
 
+    @MyLogger.log_decorator
     def _updateBoard(self, turn, coord, isNewPos=False):
         Y = int(coord[0])
         X = int(coord[1])
@@ -102,6 +111,7 @@ class TicTacToeBoard(Board):
     # PRIVATE METHODS
 
     # check for successfull tic tac toe
+    @MyLogger.log_decorator
     def __checkGameWinner(self):
         sofarR = 1
         sofarL = 1

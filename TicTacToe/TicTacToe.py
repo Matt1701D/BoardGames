@@ -1,4 +1,6 @@
 import random
+from MyLogger.MyLogger import MyLogger      # Logger module
+
 from TicTacToe.TicTacToeBoard import TicTacToeBoard
 from Game import Game
 
@@ -10,6 +12,7 @@ class TicTacToe(Game):
     # CONSTRUCTORS
 
     #initialize game parameters through user input
+    @MyLogger.log_decorator
     def __init__(self, **kwargs):   
         print("\nWelcome to Tic Tac Toe!")
 
@@ -41,6 +44,7 @@ class TicTacToe(Game):
     # PROTECTED METHODS
 
     # Method to init game parameters common to all constructors
+    @MyLogger.log_decorator
     def _initGame(self):
         super().__init__(TicTacToe.turn, self.boardSize, TicTacToe.delimeter)
         self.board = TicTacToeBoard(self.boardSize, self.delimeter)
@@ -49,6 +53,7 @@ class TicTacToe(Game):
         self._addPlayer("O","O")
 
     # get next move from user or generate for cpu until game has ended
+    @MyLogger.log_decorator
     def _playGame(self):
         gameEnd = 0
         while(not(gameEnd)):
@@ -70,6 +75,7 @@ class TicTacToe(Game):
                 self.turn = "X" if self.turn == "O" else "O"
 
     # Player chooses next move
+    @MyLogger.log_decorator
     def _getMoveHuman(self):
         success = 0
         while (not(success)):
@@ -94,6 +100,7 @@ class TicTacToe(Game):
         return coord
 
     # if cpu difficulty is 2 or greater always pick a winning or blocking move, else just random move
+    @MyLogger.log_decorator
     def _getMoveCPU(self):        
         if self.difficulty >= 2:
             coord = self.board.getBestMove()

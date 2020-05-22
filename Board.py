@@ -1,7 +1,9 @@
 from abc import ABC, abstractmethod     # Abstract class module
+from MyLogger.MyLogger import MyLogger  # Logger module
 
 class Board(ABC):
 
+    @MyLogger.log_decorator
     def __init__(self, boardSize, delimeter):
         self._boardSize = boardSize     # Size of board, boards are squared
         self._delimeter = delimeter     # delimter used in board printout for empty spaces
@@ -17,6 +19,7 @@ class Board(ABC):
 
     # initialize the game board and players
     @abstractmethod
+    @MyLogger.log_decorator
     def _initBoard(self, length):
         self._gameBoard = [[self._delimeter*length] * self._boardSize for x in range(self._boardSize)]
 
@@ -48,6 +51,7 @@ class Board(ABC):
         pass
 
     # Print out game board
+    @MyLogger.log_decorator
     def printBoard(self):
         for row in self._gameBoard:
             print(' '.join([str(s) for s in row]))
