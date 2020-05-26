@@ -48,7 +48,7 @@ class GameFactory(object):
     games = []  # our master games list
 
     @classmethod  
-    @MyLogger.log_decorator
+    @MyLogger.log_decorator 
     # Add game to game list if not already registered and sort list
     def registerGame(cls, game):      
         if game not in cls.games:

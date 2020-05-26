@@ -1,5 +1,4 @@
 from MyLogger.MyLogger import MyLogger      # Logger module
-
 from Board import Board
 
 class TicTacToeBoard(Board):

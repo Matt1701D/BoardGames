@@ -1,4 +1,6 @@
 import random
+
+from MyLogger.MyLogger import MyLogger                  # Logger module
 from ChutesAndLadders.ChutesAndLaddersBoard import ChutesAndLaddersBoard
 from Game import Game
 
@@ -11,6 +13,7 @@ class ChutesAndLadders(Game):
     # CONSTRUCTOR
 
     #initialize game
+    @MyLogger.log_decorator
     def __init__(self):
         print("\nWelcome to Chutes and Ladders!")      
         self.maxSpin = 6        
@@ -27,6 +30,7 @@ class ChutesAndLadders(Game):
         pass
 
     #have players spin and move
+    @MyLogger.log_decorator
     def _playGame(self):
         playerCnt = len(self.players)
 

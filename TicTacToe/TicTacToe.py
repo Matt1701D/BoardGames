@@ -1,7 +1,7 @@
 import random
-from MyLogger.MyLogger import MyLogger      # Logger module
 
-from TicTacToe.TicTacToeBoard import TicTacToeBoard
+from MyLogger.MyLogger import MyLogger                  # Logger module
+from TicTacToe.TicTacToeBoard import TicTacToeBoard     
 from Game import Game
 
 class TicTacToe(Game):
@@ -30,6 +30,7 @@ class TicTacToe(Game):
     # ClassMethod constructor that does not call __init__
     # used for testing to get around user input
     @classmethod
+    @MyLogger.log_decorator
     def init(cls, boardSize, difficulty, gameMode):
         objTTT = cls.__new__(cls)
         objTTT.boardSize = boardSize

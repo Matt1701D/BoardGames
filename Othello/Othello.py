@@ -1,3 +1,4 @@
+from MyLogger.MyLogger import MyLogger                  # Logger module
 from Game import Game
 from Othello.OthelloBoard import OthelloBoard
 
@@ -9,6 +10,7 @@ class Othello(Game):
 
     # CONSTRUCTORS
 
+    @MyLogger.log_decorator
     def __init__(self, **kwargs):
         print("\nWelcome to Othello!")
 
@@ -24,6 +26,7 @@ class Othello(Game):
     # ClassMethod constructor that does not call __init__
     # used for testing to get around user input
     @classmethod
+    @MyLogger.log_decorator
     def init(cls, numPlayers):
         objOT = cls.__new__(cls)
         objOT.numPlayers = numPlayers
@@ -36,6 +39,7 @@ class Othello(Game):
     # PROTECTED METHODS
 
     # Method to init game parameters common to all constructors
+    @MyLogger.log_decorator
     def _initGame(self):
         super().__init__(Othello.turn, Othello.boardSize, Othello.delimeter)
         self.board = OthelloBoard(self.boardSize,self.delimeter)
@@ -44,6 +48,7 @@ class Othello(Game):
         self._addPlayer("W","White")
 
     # get next move from user or generate for cpu until game has ended
+    @MyLogger.log_decorator
     def _playGame(self):
         self.board.printBoard()
 
@@ -69,6 +74,7 @@ class Othello(Game):
                 self.turn = self.board.Opp(self.turn)
     
     # Player chooses next move
+    @MyLogger.log_decorator
     def _getMoveHuman(self):
         success = 0
         while (not(success)):
@@ -93,6 +99,7 @@ class Othello(Game):
         return coord
     
     # get CPU move
+    @MyLogger.log_decorator
     def _getMoveCPU(self):
         return self.board.getBestMove(self.turn)
 

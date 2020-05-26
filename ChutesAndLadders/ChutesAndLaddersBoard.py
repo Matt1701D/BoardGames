@@ -1,9 +1,11 @@
+from MyLogger.MyLogger import MyLogger      # Logger module
 from Board import Board
 
 class ChutesAndLaddersBoard(Board):
 
     # CONSTRUCTOR
 
+    @MyLogger.log_decorator
     def __init__(self, boardSize, delimeter, playerNum):
         super().__init__(boardSize, delimeter)
 
@@ -26,6 +28,7 @@ class ChutesAndLaddersBoard(Board):
     # PUBLIC METHODS
 
     # Compute the location for current move and move player
+    @MyLogger.log_decorator
     def makeMove(self, turn, spin):
         # get player pos
         pos_current = self.__player_loc[turn]
@@ -43,10 +46,12 @@ class ChutesAndLaddersBoard(Board):
         self._updateBoard(turn, pos_new, True)
 
     # ensure move is valid
+    @MyLogger.log_decorator
     def validateMove(self, turn, position):
         return position > 0 and position <= 100
 
     # check for winner
+    @MyLogger.log_decorator
     def checkWinner(self,turn):
         return self.__player_loc[turn] == 100
 
@@ -57,6 +62,7 @@ class ChutesAndLaddersBoard(Board):
     # PROTECTED METHODS
 
     # initialize the game board and players
+    @MyLogger.log_decorator
     def _initBoard(self):
         # set cell width according to number of players and taking into account chutes/ladders labels
         cellLength = 4 + self.__playerNum
@@ -91,6 +97,7 @@ class ChutesAndLaddersBoard(Board):
             self._updateBoard(labelValue, value)
 
     # convert position into grid coordinates and update gameBoard
+    @MyLogger.log_decorator
     def _updateBoard(self,label,position,isNewPos=False):
         gridCoord = self.__posToGrid(position)
         y = gridCoord[0]
@@ -124,6 +131,7 @@ class ChutesAndLaddersBoard(Board):
     # PRIVATE METHODS
         
     # convert position into grid coordinates and update gameBoard
+    @MyLogger.log_decorator
     def __posToGrid(self,position):
         # convert position to grid coordinates (remember board starts at (9,0), moves Left to Right and Up
         # and then Right to Left and Up
