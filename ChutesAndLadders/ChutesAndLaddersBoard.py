@@ -7,6 +7,9 @@ class ChutesAndLaddersBoard(Board):
 
     @MyLogger.log_decorator
     def __init__(self, boardSize, delimeter, playerNum):
+        """
+        Create ChutesAndLadders board of boardSize and populated with delimeter string and number of players playerNum
+        """
         super().__init__(boardSize, delimeter)
 
         self.__playerNum = playerNum    # num of players in game
@@ -27,9 +30,11 @@ class ChutesAndLaddersBoard(Board):
 
     # PUBLIC METHODS
 
-    # Compute the location for current move and move player
     @MyLogger.log_decorator
     def makeMove(self, turn, spin):
+        """
+        Make the move for turn given a spin integer
+        """
         # get player pos
         pos_current = self.__player_loc[turn]
         pos_new = 100 if pos_current + spin > 100 else pos_current + spin
@@ -45,14 +50,19 @@ class ChutesAndLaddersBoard(Board):
         self.__player_loc[turn] = pos_new
         self._updateBoard(turn, pos_new, True)
 
-    # ensure move is valid
     @MyLogger.log_decorator
     def validateMove(self, turn, position):
+        """
+        Ensure the move is valid. Not necessary to call since game board logic ensures moves within game board
+        """
         return position > 0 and position <= 100
 
     # check for winner
     @MyLogger.log_decorator
     def checkWinner(self,turn):
+        """
+        Check if the game is over by a player at or past 100 spot
+        """
         return self.__player_loc[turn] == 100
 
     # get best cpu move, no computer play in this game so just pass

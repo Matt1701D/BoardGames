@@ -11,9 +11,12 @@ class TicTacToe(Game):
 
     # CONSTRUCTORS
 
-    #initialize game parameters through user input
     @MyLogger.log_decorator
     def __init__(self, **kwargs):   
+        """
+        Create TicTacToe game class. Optional to pass in boardSize, gameMode (1 to play vs CPU, 2 to play vs Humans)
+        and difficulty 1 (Easy), 2 (Medium), 3 (Hard)
+        """
         print("\nWelcome to Tic Tac Toe!")
 
         # cant do kwargs.get("boardSize", self.getBoardSize()) because method still runs to get default value
@@ -32,6 +35,10 @@ class TicTacToe(Game):
     @classmethod
     @MyLogger.log_decorator
     def init(cls, boardSize, difficulty, gameMode):
+        """
+        Alternate TicTacToe constructor to pass in boardSize, gameMode (1 to play vs CPU, 2 to play vs Humans)
+        and difficulty 1 (Easy), 2 (Medium), 3 (Hard)
+        """
         objTTT = cls.__new__(cls)
         objTTT.boardSize = boardSize
         objTTT.numPlayers = gameMode

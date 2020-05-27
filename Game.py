@@ -1,6 +1,7 @@
 from abc import ABC, abstractmethod     # Abstract class module
 from MyLogger.MyLogger import MyLogger  # Logger module
 
+# Game interface for game setup and play
 class Game(ABC):
 
     @MyLogger.log_decorator

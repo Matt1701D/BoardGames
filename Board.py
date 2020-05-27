@@ -1,7 +1,10 @@
 from abc import ABC, abstractmethod     # Abstract class module
 from MyLogger.MyLogger import MyLogger  # Logger module
 
+# Board interface to be used for game board logic and manipulation
 class Board(ABC):
+
+    # CONSTRUCTOR
 
     @MyLogger.log_decorator
     def __init__(self, boardSize, delimeter):
@@ -17,10 +20,12 @@ class Board(ABC):
 
     # PROTECTED METHODS
 
-    # initialize the game board and players
     @abstractmethod
     @MyLogger.log_decorator
-    def _initBoard(self, length):
+    def _initBoard(self, length=1):
+        """
+        Initialize the game board using delimeter. Can specify length for to set number of delimeters in a cell
+        """
         self._gameBoard = [[self._delimeter*length] * self._boardSize for x in range(self._boardSize)]
 
     # update gameBoard
@@ -50,9 +55,11 @@ class Board(ABC):
     def getBestMove(self, turn=0):
         pass
 
-    # Print out game board
     @MyLogger.log_decorator
     def printBoard(self):
+        """
+        Print out game board
+        """
         for row in self._gameBoard:
             print(' '.join([str(s) for s in row]))
         print("\n")

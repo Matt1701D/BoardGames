@@ -12,9 +12,11 @@ class ChutesAndLadders(Game):
 
     # CONSTRUCTOR
 
-    #initialize game
     @MyLogger.log_decorator
     def __init__(self):
+        """
+        Create ChutesAndLadders game class.
+        """
         print("\nWelcome to Chutes and Ladders!")      
         self.maxSpin = 6        
 

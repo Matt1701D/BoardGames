@@ -12,9 +12,11 @@ from Othello.Othello import Othello
 
 class BoardGames(object):
 
-    # Display Game Menu with list of registered games
     @MyLogger.log_decorator
     def ShowGameMenu():        
+        """
+        Display Game Menu with list of registered games
+        """
         choiceOutput = "Type the number of the game you would like to play or Q to Quit\n"
         for idx, game in enumerate(GameFactory.games):
             choice = str(idx+1) + ") " + game + "\n"
@@ -35,34 +37,43 @@ class BoardGames(object):
                 try:
                     gameClass = GameFactory.getGame(int(game)-1)
                     eval(gameClass)()
-                except AssertionError as AssertEX:
-                    MyLogger.myLog.exception(AssertEX)
-                    print(AssertEX)
+                except AssertionError as AssertEx:
+                    MyLogger.myLog.exception(AssertEx)
+                    print(AssertEx)
+                except NameError as NameEx:
+                    MyLogger.myLog.exception(NameEx)
+                    print(NameEx)
                 except Exception as Ex:
                     strOutputError = "Could not load game. Check the registered game name matches the game's class name and the module has been " 
                     strOutputError += "imported as \'from Package.Module import className\'.\n"
                     print(strOutputError)
+
+                    MyLogger.myLog.exception(Ex)
+                    print(Ex)
 
 # Game Factory class for list of games to play
 class GameFactory(object):
     games = []  # our master games list
 
     @classmethod  
-    @MyLogger.log_decorator 
-    # Add game to game list if not already registered and sort list
-    def registerGame(cls, game):      
+    @MyLogger.log_decorator     
+    def registerGame(cls, game):   
+        """
+        Add game to game list if not already registered and sort list
+        """
         if game not in cls.games:
             cls.games.append(game)
             cls.games.sort()
 
     @classmethod  
     @MyLogger.log_decorator
-    # Lookup game by sorted index and return name of game
     def getGame(cls, gameID):
+        """
+        Lookup game by sorted index and return name of game
+        """
         creator = cls.games[gameID]
         if not creator:
             strOutputError = "Invalid gameID({}) or game not found.\n".format(gameID)
-            #logging.exception(strOutputError)
             raise AssertionError(strOutputError)
 
         return creator

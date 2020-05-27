@@ -7,6 +7,9 @@ class TicTacToeBoard(Board):
 
     @MyLogger.log_decorator
     def __init__(self, boardSize, delimeter):
+        """
+        Create TicTacToe board of boardSize and populated with delimeter string
+        """
         super().__init__(boardSize, delimeter)
 
         self.__turnsTaken = 0
@@ -25,6 +28,9 @@ class TicTacToeBoard(Board):
     # ensure move is valid
     @MyLogger.log_decorator
     def validateMove(self, turn, coord):
+        """
+        Ensure the move is valid for turn given a list of coord [Y,X]
+        """
         Y = int(coord[0])
         X = int(coord[1])
         return self._gameBoard[Y][X] == self._delimeter
@@ -32,6 +38,9 @@ class TicTacToeBoard(Board):
     # store turn in board and transposed board
     @MyLogger.log_decorator
     def makeMove(self, turn, coord):
+        """
+        Make the move for turn given a list of coord [Y,X]
+        """
         if self.validateMove(turn, coord):
             self._updateBoard(turn, coord)
             self.__turnsTaken+=1
@@ -39,6 +48,9 @@ class TicTacToeBoard(Board):
     # check for winner
     @MyLogger.log_decorator
     def checkWinner(self):
+        """
+        Check if the game is over (win or draw)
+        """
         if self.__turnsTaken == self._boardSize * self._boardSize:
             return 2
         elif self.__checkGameWinner():
@@ -49,6 +61,9 @@ class TicTacToeBoard(Board):
     # always have cpu pick coord to win or block a win
     @MyLogger.log_decorator
     def getBestMove(self):
+        """
+        Compute the best move by picking 1) a winning move 2) blocking a winning move. Returns coord [Y,X]
+        """
         X = Y = self._boardSize
         XCountR = OCountR = BCountR = 0
         XCountL = OCountL = BCountL = 0
@@ -97,7 +112,7 @@ class TicTacToeBoard(Board):
     #make transposed board to more quickly check for vertical moves and win
     @MyLogger.log_decorator
     def _initBoard(self):
-        super()._initBoard(1)
+        super()._initBoard()
         self.__gameBoardTranspose = [[self._delimeter] * self._boardSize for x in range(self._boardSize)]
 
     @MyLogger.log_decorator

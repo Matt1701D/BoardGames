@@ -11,13 +11,20 @@ class OthelloBoard(Board):
 
     @MyLogger.log_decorator
     def __init__(self, boardSize, delimeter):
+        """
+        Create Othello board of boardSize and populated with delimeter string
+        """
         super().__init__(boardSize, delimeter)
 
+        # initial setup of 2 black and white pieces
         self.__pieceCount = {"B":2,"W":2,str(self._delimeter):(self._boardSize**2)-4}
         self.__tmpMove = []
 
+        # 8 way directional list to look for peices to flip
         dirCoord = [-1,0,1]
         self.__dirList = [[x,y] for x in dirCoord for y in dirCoord if [x,y] != [0,0]]
+
+        # Corner list for CPU moves to choose as a default over other moves
         self.__cornerTup = ((0,0),(0,self._boardSize-1),(self._boardSize-1,0),(self._boardSize-1,self._boardSize-1))
 
         self._initBoard()
@@ -34,9 +41,13 @@ class OthelloBoard(Board):
 
     # PUBLIC METHODS
 
-    # ensure move is valid
     @MyLogger.log_decorator
     def validateMove(self, turn, coord):
+        """
+        Ensure the move is valid for turn given a list of coord [Y,X]
+        """
+
+        # If we have list of moves already then already validated
         if self.__tmpMove:
             return True
         else:
@@ -58,15 +69,19 @@ class OthelloBoard(Board):
 
                 return True if self.__tmpMove else False
 
-    # investigate chosen move and update if valid
     @MyLogger.log_decorator
     def makeMove(self, turn, coord):
+        """
+        Make the move for turn given a list of coord [Y,X]
+        """
         if self.validateMove(turn, coord):
             self._updateBoard(turn, coord)
 
-    # check for winner
     @MyLogger.log_decorator
     def checkWinner(self):
+        """
+        Check if the game is over (win or draw)
+        """
         if 0 in self.__pieceCount.values():
             if self.__pieceCount["B"] > self.__pieceCount["W"] :
                return "B"
@@ -77,9 +92,11 @@ class OthelloBoard(Board):
         else:
             return 0
 
-    # Print out game board
     @MyLogger.log_decorator
     def printBoard(self):
+        """
+        Overridden print board method for Othello
+        """
         print(' '*2+' '.join([str(i) for i in range(0,self._boardSize)]))
 
         for idx, row in enumerate(self._gameBoard):
@@ -88,9 +105,11 @@ class OthelloBoard(Board):
         print("\n")
         print("White = {}, Black = {}, Blank = {}".format(self.__pieceCount["W"], self.__pieceCount["B"], self.__pieceCount[self._delimeter]))
 
-    # determine best move based on most flips
     @MyLogger.log_decorator
     def getBestMove(self, turn):
+        """
+        Compute the best move for turn in flip count unless corner move possible. Returns coord [Y,X]
+        """
         bestMoves = {}
         opp = self.Opp(turn)
 
@@ -119,7 +138,7 @@ class OthelloBoard(Board):
 
     @MyLogger.log_decorator
     def _initBoard(self):
-        super()._initBoard(1)
+        super()._initBoard()
 
         # Half board size
         hB = int(self._boardSize / 2)

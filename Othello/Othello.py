@@ -12,6 +12,9 @@ class Othello(Game):
 
     @MyLogger.log_decorator
     def __init__(self, **kwargs):
+        """
+        Create Othello game class. Optional to pass in gameMode (1 to play vs CPU, 2 to play vs Humans)
+        """
         print("\nWelcome to Othello!")
 
         # cant do kwargs.get("gameMode", self.getGameMode()) because method still runs to get default value
@@ -27,9 +30,12 @@ class Othello(Game):
     # used for testing to get around user input
     @classmethod
     @MyLogger.log_decorator
-    def init(cls, numPlayers):
+    def init(cls, gameMode):
+        """
+        Alternate Othello constructor to pass in gameMode (1 to play vs CPU, 2 to play vs Humans)
+        """
         objOT = cls.__new__(cls)
-        objOT.numPlayers = numPlayers
+        objOT.numPlayers = gameMode
         #super(Othello, objOT).__init__(Othello.turn, Othello.boardSize, Othello.delimeter)        
 
         objOT._initGame()
