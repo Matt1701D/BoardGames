@@ -7,7 +7,7 @@ class MyLogger(logging.getLoggerClass()):
     logFileName = "BoardGames.log"
     logFileMode = "w"
     logName = "BoardGames"
-    logLevel = "INFO"
+    logLevel = "DEBUG"
     myLog = None
 
     @classmethod
@@ -102,26 +102,18 @@ class MyLogger(logging.getLoggerClass()):
             kwargs_repr = [f"{k}={v!r}" for k, v in kwargs.items()]  
             signature = ", ".join(args_repr + kwargs_repr)           
 
-            #with TraceLog(funcName, signature):
-            try:
-                EnterMsg = "Entering {}({})".format(funcName,signature)
-                MyLogger.logDebug(EnterMsg)
-                startTime = perf_counter_ns()
+            with TraceLog(funcName, signature):
+                try:
+                    return func(*args,**kwargs)
+                # Handle all unknown exceptions here
+                except Exception as Ex:
+                    strOutputError = "Unhandled exception occurred."
+                    print(strOutputError)
 
-                return func(*args,**kwargs)
-            except Exception as Ex:
-                strOutputError = "Unhandled exception occurred."
-                print(strOutputError)
-                # Log and Quit
-                MyLogger.logException(Ex)
-                #print(Ex)
-                raise
-            finally:
-                endTime = perf_counter_ns()
-                runTime = endTime - startTime
-                ExitMsg = "Exiting {} in {} ns".format(funcName, runTime)
+                    # Log and Quit
+                    MyLogger.logException(Ex)
+                    raise
 
-                MyLogger.logDebug(ExitMsg)
         return wrapper
 
     # DEPRECATED - used below within each method to log
@@ -138,14 +130,14 @@ class MyLogger(logging.getLoggerClass()):
     #    strOutput = "Exiting " + msg
     #    cls.myLog.info(strOutput)
 
-# Trace class to log enter and exit of methods
+# Trace class context manager to log enter and exit of methods
 class TraceLog(object):
     def __init__(self, funcName, signature):
         self.funcName = funcName
         self.signature = signature
 
     def __enter__(self):
-        EnterMsg = "Entering {}({})".format(funcName,signature)
+        EnterMsg = "Entering {}({})".format(self.funcName,self.signature)
         MyLogger.logDebug(EnterMsg)
         self.startTime = perf_counter_ns()
         return self

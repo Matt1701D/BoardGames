@@ -81,7 +81,7 @@ class GameFactory(object):
         
 if __name__ == '__main__':
     # start logging
-    MyLogger.getMyLogger()
+    MyLogger.getMyLogger(logLevel="INFO")
 
     # Register list of games using className here
     GameFactory.registerGame("TicTacToe")
