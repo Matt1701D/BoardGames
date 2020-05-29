@@ -1,6 +1,7 @@
 from MyLogger.MyLogger import MyLogger                  # Logger module
-from Game import Game
+from MyLogger.MyExceptions import *                     # Custom Exceptions
 from Othello.OthelloBoard import OthelloBoard
+from Game import Game
 
 class Othello(Game):
 
@@ -11,18 +12,25 @@ class Othello(Game):
     # CONSTRUCTORS
 
     @MyLogger.log_decorator
-    def __init__(self, **kwargs):
+    def __init__(self, gameMode=None, skipPlay=False):
         """
-        Create Othello game class. Optional to pass in gameMode (1 to play vs CPU, 2 to play vs Humans)
+        Create Othello game class. Optional to pass in gameMode (1 to play vs CPU, 2 to play vs Humans), dont't pass for user prompt
         """
         print("\nWelcome to Othello!")
-
-        # cant do kwargs.get("gameMode", self.getGameMode()) because method still runs to get default value
-        self.numPlayers = self.getGameMode() if kwargs.get("gameMode", None) == None else kwargs["gameMode"]     
+        
+        # Get and validate game parameters from user or init
+        try:     
+            self.numPlayers = self.getGameMode(gameMode, '^[1-2]$')   
+        except InvalidParameterException as IPEx:
+            # Log and Quit
+            MyLogger.logException(IPEx)
+            print(IPEx)
+            raise
 
         self._initGame()
 
-        if not kwargs:
+        # For testing dont want to start user prompts so skip
+        if not skipPlay:
             self._playGame()
 
     # DEPRECATED, use __init__ with kwargs, leaving for info purposes only
@@ -36,6 +44,7 @@ class Othello(Game):
         """
         objOT = cls.__new__(cls)
         objOT.numPlayers = gameMode
+        # cant do kwargs.get("gameMode", self.getGameMode()) because getGameMode method still runs to get default value  
         #super(Othello, objOT).__init__(Othello.turn, Othello.boardSize, Othello.delimeter)        
 
         objOT._initGame()
@@ -94,9 +103,9 @@ class Othello(Game):
                 X = coord[1]
 
                 if (not(X.isdigit()) or int(X) >= self.boardSize):
-                    print("First coordinate isnt an integer or less than " + str(self.boardSize))
+                    print("First coordinate is not an integer or less than " + str(self.boardSize))
                 elif (not(Y.isdigit()) or int(Y) >= self.boardSize):
-                    print("Second coordinate isnt an integer or less than " + str(self.boardSize))
+                    print("Second coordinate is not an integer or less than " + str(self.boardSize))
                 elif (not(self.board.validateMove(self.turn, coord))):
                     print("Invalid move at coordinates:" + str(coord))
                 else:                    

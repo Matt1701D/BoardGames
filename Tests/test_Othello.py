@@ -1,6 +1,7 @@
 import unittest, copy
 from Othello.OthelloBoard import OthelloBoard
 from Othello.Othello import Othello
+from MyLogger.MyExceptions import *
 
 class Test_Othello(unittest.TestCase):
     def test_ValidVertDown(self):
@@ -278,7 +279,7 @@ class Test_Othello(unittest.TestCase):
         gameMode = 2
 
         #Arrange
-        myOT = Othello(gameMode=gameMode)
+        myOT = Othello(gameMode,True)
         myOT.turn = "W"
         myBoard = myOT.board
         myBoard.GameBoard[0] = ["_","_","_","_","_","_","_","_"]
@@ -316,10 +317,10 @@ class Test_Othello(unittest.TestCase):
 
     def test_CPUMoveCorner(self):
         self.maxDiff = None
-        gameMode = 2
 
         #Arrange
-        myOT = Othello(gameMode=gameMode)
+        gameMode = 2
+        myOT = Othello(gameMode, True)
         myOT.turn = "W"
         myBoard = myOT.board
         myBoard.GameBoard[0] = ["_","_","_","_","_","_","_","_"]
@@ -354,6 +355,15 @@ class Test_Othello(unittest.TestCase):
         #Assert
         self.assertEqual(expBoard, actBoard, "An invalid move made a move")
         self.assertEqual(expCnt, actCnt, "Invalid piece count")
+
+    def test_Params(self):
+        #Arrange
+        gameMode = 3
+
+        #Act
+        #Assert
+        with(self.assertRaises(InvalidParameterException)):
+            myOT = Othello(gameMode, True)
         
 if __name__ == '__main__':
 

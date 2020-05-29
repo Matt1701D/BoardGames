@@ -34,6 +34,9 @@
     <Compile Include="Game.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="MyLogger\MyExceptions.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="MyLogger\MyLogger.py">
       <SubType>Code</SubType>
     </Compile>

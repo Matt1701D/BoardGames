@@ -1,6 +1,7 @@
 import unittest
 from TicTacToe.TicTacToeBoard import TicTacToeBoard
 from TicTacToe.TicTacToe import TicTacToe
+from MyLogger.MyExceptions import *
 
 class Test_TicTacToe(unittest.TestCase):
     def test_BoardSize(self):
@@ -47,7 +48,7 @@ class Test_TicTacToe(unittest.TestCase):
         difficulty = 2
         gameMode=1
 
-        myTTT = TicTacToe(boardSize=myBoardSize, difficulty=difficulty, gameMode=gameMode)
+        myTTT = TicTacToe(myBoardSize, gameMode, difficulty, True)
         myBoard = myTTT.board
         myBoard.makeMove("X",[0,0])
         myBoard.makeMove("X",[0,1])
@@ -64,7 +65,7 @@ class Test_TicTacToe(unittest.TestCase):
         difficulty = 2
         gameMode=1
 
-        myTTT = TicTacToe(boardSize=myBoardSize, difficulty=difficulty, gameMode=gameMode)
+        myTTT = TicTacToe(myBoardSize, gameMode, difficulty, True)
         myBoard = myTTT.board
         myBoard.makeMove("X",[0,0])
         myBoard.makeMove("X",[1,0])
@@ -81,7 +82,7 @@ class Test_TicTacToe(unittest.TestCase):
         difficulty = 2
         gameMode=1
 
-        myTTT = TicTacToe(boardSize=myBoardSize, difficulty=difficulty, gameMode=gameMode)
+        myTTT = TicTacToe(myBoardSize, gameMode, difficulty, True)
         myBoard = myTTT.board
         myBoard.makeMove("X",[0,0])
         myBoard.makeMove("X",[1,1])
@@ -98,7 +99,7 @@ class Test_TicTacToe(unittest.TestCase):
         difficulty = 2
         gameMode=1
 
-        myTTT = TicTacToe(boardSize=myBoardSize, difficulty=difficulty, gameMode=gameMode)
+        myTTT = TicTacToe(myBoardSize, gameMode, difficulty, True)
         myBoard = myTTT.board
         myBoard.makeMove("X",[0,2])
         myBoard.makeMove("X",[1,1])
@@ -174,7 +175,7 @@ class Test_TicTacToe(unittest.TestCase):
         difficulty = 1
         gameMode = 1
 
-        myTTT = TicTacToe(boardSize=myBoardSize, difficulty=difficulty, gameMode=gameMode)
+        myTTT = TicTacToe(myBoardSize, gameMode, difficulty, True)
         myBoard = myTTT.board
         myBoard.makeMove("X",[0,2])
         myBoard.makeMove("X",[1,1])
@@ -195,7 +196,7 @@ class Test_TicTacToe(unittest.TestCase):
         difficulty = 3
         gameMode = 1
 
-        myTTT = TicTacToe(boardSize=myBoardSize, difficulty=difficulty, gameMode=gameMode)
+        myTTT = TicTacToe(myBoardSize, gameMode, difficulty, True)
         myBoard = myTTT.board
         myBoard.makeMove("X",[0,2])
         myBoard.makeMove("X",[1,1])
@@ -205,6 +206,39 @@ class Test_TicTacToe(unittest.TestCase):
         
         #Assert
         self.assertEqual(result,[2,0])
+
+    def test_ParamBoardSize(self):
+        #Arrange
+        myBoardSize = 4
+        difficulty = 3
+        gameMode = 1
+
+        #Act
+        #Assert
+        with(self.assertRaises(InvalidParameterException)):
+            myTTT = TicTacToe(myBoardSize, gameMode, difficulty, True)
+
+    def test_ParamGameMode(self):
+        #Arrange
+        myBoardSize = 3
+        difficulty = 4
+        gameMode = 1
+
+        #Act
+        #Assert
+        with(self.assertRaises(InvalidParameterException)):
+            myTTT = TicTacToe(myBoardSize, gameMode, difficulty, True)
+
+    def test_ParamDifficulty(self):
+        #Arrange
+        myBoardSize = 3
+        difficulty = 3
+        gameMode = 3
+
+        #Act
+        #Assert
+        with(self.assertRaises(InvalidParameterException)):
+            myTTT = TicTacToe(myBoardSize, gameMode, difficulty, True)
 
 if __name__ == '__main__':
     unittest.main()

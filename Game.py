@@ -1,5 +1,7 @@
 from abc import ABC, abstractmethod     # Abstract class module
+from re import search                   # RegEx module for input validation
 from MyLogger.MyLogger import MyLogger  # Logger module
+from MyLogger.MyExceptions import *     # Custom Exceptions
 
 # Game interface for game setup and play
 class Game(ABC):
@@ -61,50 +63,52 @@ class Game(ABC):
     # User input method for getting board size
     @staticmethod
     @MyLogger.log_decorator
-    def getBoardSize(minSize=2, maxSize=10, oddSize=1):
-        success = 0
-        while(not(success)):
-            question = "Enter size of board (Min: {}, Max {}, {}):".format(minSize,maxSize,"Even" if oddSize==0 else "Odd")
-            boardSize = input(question)
-            if (not(boardSize.isdigit())):
-                print("Board size not a number")
-            elif int(boardSize) < minSize:
-                print("Board size must be greater than {}".format(minSize))
-            elif int(boardSize) > maxSize:
-                print("Board size must be less than {}".format(maxSize))
-            elif int(boardSize) % 2 != oddSize:   
-                print("Board size must be {}".format("even" if oddSize==0 else "odd"))
-            else:
-                success = 1
+    def getBoardSize(boardSize, regEx):
+        if boardSize is None:
+            success = 0
+            while(not(success)):
+                question = "Enter size of board (Min: {}, Max {}, {}):".format(minSize,maxSize,"Even" if oddSize==0 else "Odd")
+                boardSize = input(question)
+                if not search(regEx,boardSize): 
+                    print("Board size must match {}".format(regEx))
+                else:
+                    success = 1
+        elif not search(regEx,str(boardSize)):
+            raise InvalidParameterException("boardSize", boardSize, regEx) 
+
         return int(boardSize)
 
     # User input method for getting computer difficulty level
     @staticmethod
     @MyLogger.log_decorator
-    def getDifficulty():
-        success = 0
-        while(not(success)):
-            difficulty = input("Enter computer difficulty 1 (Easy), 2 (Medium), 3 (Hard): ")
-            if (not(difficulty.isdigit())):
-                print("Difficulty is not a number")
-            elif int(difficulty) not in [1,2,3]:   
-                print("Difficulty must be 1, 2 or 3")
-            else:
-                success = 1
+    def getDifficulty(difficulty, regEx):
+        if difficulty is None:
+            success = 0
+            while(not(success)):
+                difficulty = input("Enter computer difficulty 1 (Easy), 2 (Medium), 3 (Hard): ")
+                if not search(regEx,difficulty): 
+                    print("Difficulty must match {}".format(regEx))
+                else:
+                    success = 1
+        elif not search(regEx,str(difficulty)):
+            raise InvalidParameterException("difficulty", difficulty, regEx) 
+
         return int(difficulty)
     
     # User input method for getting human vs human or human vs cpu game mode
     @staticmethod
     @MyLogger.log_decorator
-    def getGameMode():
-        success = 0
-        while(not(success)):
-            numPlayers = input("Enter 1 to play against computer or 2 to play between humans: ")
-            if (not(numPlayers.isdigit())):
-                print("Number of players is not a number")
-            elif int(numPlayers) not in [1,2]:   
-                print("Number of players must be 1 or 2")
-            else:
-                success = 1
+    def getGameMode(numPlayers, regEx):
+        if numPlayers is None:
+            success = 0
+            while(not(success)):
+                numPlayers = input("Enter 1 to play against computer or 2 to play between humans: ")
+                if not search(regEx,numPlayers):
+                    print("Number of players must match {}".format(regEx))
+                else:
+                    success = 1
+        elif not search(regEx,str(numPlayers)):
+            raise InvalidParameterException("gameMode", numPlayers, regEx) 
+
         return int(numPlayers)
 

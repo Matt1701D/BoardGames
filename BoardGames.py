@@ -38,18 +38,19 @@ class BoardGames(object):
                     gameClass = GameFactory.getGame(int(game)-1)
                     eval(gameClass)()
                 except AssertionError as AssertEx:
-                    MyLogger.myLog.exception(AssertEx)
+                    MyLogger.logException(AssertEx)
                     print(AssertEx)
                 except NameError as NameEx:
-                    MyLogger.myLog.exception(NameEx)
+                    MyLogger.logException(NameEx)
                     print(NameEx)
                 except Exception as Ex:
                     strOutputError = "Could not load game. Check the registered game name matches the game's class name and the module has been " 
                     strOutputError += "imported as \'from Package.Module import className\'.\n"
                     print(strOutputError)
 
-                    MyLogger.myLog.exception(Ex)
+                    MyLogger.logException(Ex)
                     print(Ex)
+                    raise
 
 # Game Factory class for list of games to play
 class GameFactory(object):

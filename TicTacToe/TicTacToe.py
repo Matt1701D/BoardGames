@@ -1,6 +1,7 @@
 import random
 
 from MyLogger.MyLogger import MyLogger                  # Logger module
+from MyLogger.MyExceptions import *                     # Custom Exceptions
 from TicTacToe.TicTacToeBoard import TicTacToeBoard     
 from Game import Game
 
@@ -12,21 +13,28 @@ class TicTacToe(Game):
     # CONSTRUCTORS
 
     @MyLogger.log_decorator
-    def __init__(self, **kwargs):   
+    def __init__(self, boardSize=None, gameMode=None, difficulty=None, skipPlay=False):   
         """
         Create TicTacToe game class. Optional to pass in boardSize, gameMode (1 to play vs CPU, 2 to play vs Humans)
-        and difficulty 1 (Easy), 2 (Medium), 3 (Hard)
+        and difficulty 1 (Easy), 2 (Medium), 3 (Hard). Skip parameters to use user prompt instead
         """
         print("\nWelcome to Tic Tac Toe!")
-
-        # cant do kwargs.get("boardSize", self.getBoardSize()) because method still runs to get default value
-        self.boardSize = self.getBoardSize() if kwargs.get("boardSize", None) == None else kwargs["boardSize"]
-        self.numPlayers = self.getGameMode() if kwargs.get("gameMode", None) == None else kwargs["gameMode"]     
-        self.difficulty = 1 if self.numPlayers == 2 else self.getDifficulty() if kwargs.get("difficulty", None) == None else kwargs["difficulty"]      
+        
+        # Get and validate game parameters from user or init
+        try:
+            self.boardSize = self.getBoardSize(boardSize, '^[3|5|7|9]$')
+            self.numPlayers = self.getGameMode(gameMode, '^[1-2]$')  
+            self.difficulty = self.getDifficulty(difficulty, '^[1-3]$')      
+        except InvalidParameterException as IPEx:
+            # Log and Quit
+            MyLogger.logException(IPEx)
+            print(IPEx)
+            raise
         
         self._initGame()
 
-        if not kwargs:
+        # For testing dont want to start user prompts so skip
+        if not skipPlay:
             self._playGame()
 
     # DEPRECATED, use __init__ with kwargs, leaving for info purposes only
@@ -43,6 +51,7 @@ class TicTacToe(Game):
         objTTT.boardSize = boardSize
         objTTT.numPlayers = gameMode
         objTTT.difficulty = difficulty
+        # cant do kwargs.get("boardSize", self.getBoardSize()) because method still runs to get default value
         #super(TicTacToe, objTTT).__init__(TicTacToe.turn, boardSize, TicTacToe.delimeter)
 
         objTTT._initGame()        
