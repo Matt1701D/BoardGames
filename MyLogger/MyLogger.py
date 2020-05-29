@@ -10,8 +10,17 @@ class MyLogger(logging.getLoggerClass()):
     logLevel = "DEBUG"
     myLog = None
 
+    # CONSTRUCTOR
+
     @classmethod
     def getMyLogger(cls, **kwargs):
+        """
+        Create new logger. Optional params by keyword:
+        1) logFileName: name of log file
+        2) logFileMode: file write mode, default is 'w' to truncate existing log
+        3) logName: name for this logger
+        4) logLevel: level to filter log, order is DEBUG,INFO,WARNING,ERROR
+        """
         if cls.myLog is None:
             # setup logger
             logFileName = cls.logFileName if kwargs.get("logFileName", None) == None else kwargs["logFileName"] 
@@ -33,12 +42,7 @@ class MyLogger(logging.getLoggerClass()):
 
             cls.myLog.addHandler(myLogFH)
 
-    @classmethod
-    def createMyLogger(cls):
-        cls.getMyLogger()
-
-        strOutput = "MyLogger not initialized. Had to create logger using default params."
-        cls.logWarn(strOutput)
+    # LOG METHODS
 
     @classmethod
     def logDebug(cls, msg):
@@ -46,7 +50,7 @@ class MyLogger(logging.getLoggerClass()):
         Log a DEBUG level msg
         """
         if cls.myLog is None:
-            cls.createMyLogger()
+            cls.__createMyLogger()
 
         cls.myLog.debug(msg)
 
@@ -56,7 +60,7 @@ class MyLogger(logging.getLoggerClass()):
         Log an INFO level msg
         """
         if cls.myLog is None:
-            cls.createMyLogger()
+            cls.__createMyLogger()
 
         strOutput = msg
         cls.myLog.info(strOutput)
@@ -67,7 +71,7 @@ class MyLogger(logging.getLoggerClass()):
         Log a WARNING level msg
         """
         if cls.myLog is None:
-            cls.createMyLogger()
+            cls.__createMyLogger()
 
         strOutput = msg
         cls.myLog.warning(strOutput)
@@ -78,7 +82,7 @@ class MyLogger(logging.getLoggerClass()):
         Log an ERROR level msg
         """
         if cls.myLog is None:
-            cls.createMyLogger()
+            cls.__createMyLogger()
 
         cls.myLog.error(msg)
 
@@ -88,18 +92,22 @@ class MyLogger(logging.getLoggerClass()):
         Log an ERROR level msg and the exception Ex
         """
         if cls.myLog is None:
-            cls.createMyLogger()
+            cls.__createMyLogger()
 
         cls.myLog.exception(Ex)
 
-    # Logging decorator for enter and exit of methods
-    # Decorator must be under the @classmethod decorator (bottom up processing) else error accessing __name__ attrib for class methods
+    # DECORATOR
+
     def log_decorator(func):
-        @functools.wraps(func)
+        """
+        Logging decorator for enter and exit of methods, catches all unknown Exceptions. Any explicit exceptions should be handled by client
+        Decorator must be under the @classmethod decorator (bottom up processing) else error accessing __name__ attrib for class methods
+        """
+        @functools.wraps(func) # preserves calling func info, not sure if needed
         def wrapper(*args,**kwargs):
             funcName = func.__qualname__ if func.__qualname__ else func.__name__
             args_repr = [repr(a) for a in args]                      
-            kwargs_repr = [f"{k}={v!r}" for k, v in kwargs.items()]  
+            kwargs_repr = [f"{k}={v!r}" for k, v in kwargs.items()]  #!r forces to use print friendlier __repr__ instead of __str__
             signature = ", ".join(args_repr + kwargs_repr)           
 
             with TraceLog(funcName, signature):
@@ -115,6 +123,17 @@ class MyLogger(logging.getLoggerClass()):
                     raise
 
         return wrapper
+
+    # PRIVATE METHODS
+
+    # Create a default logger if one has not been created
+    @classmethod
+    def __createMyLogger(cls):
+        cls.getMyLogger()
+
+        strOutput = "MyLogger not initialized. Had to create logger using default params."
+        cls.logWarn(strOutput)
+
 
     # DEPRECATED - used below within each method to log
     #MyLogger.TraceEnter(type(self).__qualname__ +"."+sys._getframe().f_code.co_name)
@@ -137,7 +156,7 @@ class TraceLog(object):
         self.signature = signature
 
     def __enter__(self):
-        EnterMsg = "Entering {}({})".format(self.funcName,self.signature)
+        EnterMsg = f"Entering {self.funcName}({self.signature})"
         MyLogger.logDebug(EnterMsg)
         self.startTime = perf_counter_ns()
         return self
@@ -145,7 +164,7 @@ class TraceLog(object):
     def __exit__(self, exc_type, exc_value, traceback):
         self.endTime = perf_counter_ns()
         runTime = self.endTime - self.startTime
-        ExitMsg = "Exiting " + self.funcName + " in " + str(runTime) + " ns"
+        ExitMsg = F"Exiting {self.funcName} in {str(runTime)} ns"
         MyLogger.logDebug(ExitMsg)
 
 

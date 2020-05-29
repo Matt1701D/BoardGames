@@ -22,14 +22,14 @@ class Game(ABC):
         playersSuccess = False
         while(not playersSuccess):
             players = input("Enter unique name for players separated by comma: ")
-            players = players.split(', ')
+            players = players.split(',')
             if len(players) == len(set(players)):
                 playersSuccess = True
             else:
                 print("Player names not unique!")
 
         for idx, player in enumerate(players):
-            self._addPlayer(idx, player)
+            self._addPlayer(idx, player.strip())
 
     # PROTECTED METHODS
 
@@ -63,14 +63,14 @@ class Game(ABC):
     # User input method for getting board size
     @staticmethod
     @MyLogger.log_decorator
-    def getBoardSize(boardSize, regEx):
+    def getBoardSize(boardSize, regEx, minSize=3, maxSize=9, oddSize=True):
         if boardSize is None:
             success = 0
             while(not(success)):
-                question = "Enter size of board (Min: {}, Max {}, {}):".format(minSize,maxSize,"Even" if oddSize==0 else "Odd")
+                question = f"Enter size of board (Min: {minSize}, Max {maxSize}, {'Odd' if oddSize==True else 'Even'}):"
                 boardSize = input(question)
                 if not search(regEx,boardSize): 
-                    print("Board size must match {}".format(regEx))
+                    print(f"Board size must match {regEx}")
                 else:
                     success = 1
         elif not search(regEx,str(boardSize)):
@@ -87,7 +87,7 @@ class Game(ABC):
             while(not(success)):
                 difficulty = input("Enter computer difficulty 1 (Easy), 2 (Medium), 3 (Hard): ")
                 if not search(regEx,difficulty): 
-                    print("Difficulty must match {}".format(regEx))
+                    print(f"Difficulty must match {regEx}")
                 else:
                     success = 1
         elif not search(regEx,str(difficulty)):
@@ -104,7 +104,7 @@ class Game(ABC):
             while(not(success)):
                 numPlayers = input("Enter 1 to play against computer or 2 to play between humans: ")
                 if not search(regEx,numPlayers):
-                    print("Number of players must match {}".format(regEx))
+                    print(f"Number of players must match {regEx}")
                 else:
                     success = 1
         elif not search(regEx,str(numPlayers)):

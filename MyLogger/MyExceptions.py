@@ -6,5 +6,5 @@ class InvalidParameterException(BaseException):
         self.expRegEx = expRegEx       
 
     def __str__(self):
-        msg = "Invalid value \'{}\' for parameter {}. Expected RegEx pattern {}".format(self.paramValue, self.paramName, self.expRegEx)
+        msg = f"Invalid value \'{self.paramValue}\' for parameter {self.paramName}. Expected RegEx pattern {self.expRegEx}"
         return msg

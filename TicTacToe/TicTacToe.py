@@ -87,7 +87,7 @@ class TicTacToe(Game):
             if gameEnd == 2:
                 print("It's a DRAW!\n")
             elif gameEnd:
-                print(self.turn + " WINS!\n")
+                print(f"{self.turn} WINS!\n")
             else:
                 self.turn = "X" if self.turn == "O" else "O"
 
@@ -96,7 +96,7 @@ class TicTacToe(Game):
     def _getMoveHuman(self):
         success = 0
         while (not(success)):
-            userInput = input("Enter coordinates for " + self.turn + ": ")
+            userInput = input(f"Enter coordinates for {self.turn}: ")
             coord = userInput.split()
 
             if len(coord) != 2:
@@ -106,11 +106,11 @@ class TicTacToe(Game):
                 X = coord[1]
 
                 if (not(X.isdigit()) or int(X) >= self.boardSize):
-                    print("First coordinate isnt an integer or less than " + str(self.boardSize))
+                    print(f"First coordinate isnt an integer or less than {str(self.boardSize)}")
                 elif (not(Y.isdigit()) or int(Y) >= self.boardSize):
-                    print("Second coordinate isnt an integer or less than " + str(self.boardSize))
+                    print(f"Second coordinate isnt an integer or less than {str(self.boardSize)}")
                 elif (not(self.board.validateMove(self.turn, coord))):
-                    print("Already move made at coordinates:" + str(coord))
+                    print(f"Already move made at coordinates: {str(coord)}")
                 else:
                     success = 1 
 

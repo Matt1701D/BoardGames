@@ -38,11 +38,11 @@ class ChutesAndLadders(Game):
 
         gameWon = False
         while(not(gameWon)):
-            input(self.players[self.turn] + " ("+str(self.turn)+") press Enter to spin")
+            input(f"{self.players[self.turn]} ({str(self.turn)}) press Enter to spin")
             print("\n")
 
             spin = random.randint(1,self.maxSpin)
-            print("You spun a " + str(spin))
+            print(f"You spun a {str(spin)}")
 
             self.board.makeMove(self.turn, spin)
             print("\n")
@@ -51,7 +51,7 @@ class ChutesAndLadders(Game):
             gameWon = self.board.checkWinner(self.turn)
             if gameWon:
                 print("\n")
-                print(self.players[self.turn] + " wins!\n")
+                print(f"{self.players[self.turn]} wins!\n")
             else:
                 self.turn = 0 if self.turn+1 > playerCnt-1 else self.turn+1
 

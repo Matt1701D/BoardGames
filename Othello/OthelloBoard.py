@@ -103,7 +103,7 @@ class OthelloBoard(Board):
             print(str(idx) + ' ' + ' '.join([str(s) for s in row]))
 
         print("\n")
-        print("White = {}, Black = {}, Blank = {}".format(self.__pieceCount["W"], self.__pieceCount["B"], self.__pieceCount[self._delimeter]))
+        print(f"White = {self.__pieceCount['W']}, Black = {self.__pieceCount['B']}, Blank = {self.__pieceCount[self._delimeter]}")
 
     @MyLogger.log_decorator
     def getBestMove(self, turn):

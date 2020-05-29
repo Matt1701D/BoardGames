@@ -19,7 +19,7 @@ class BoardGames(object):
         """
         choiceOutput = "Type the number of the game you would like to play or Q to Quit\n"
         for idx, game in enumerate(GameFactory.games):
-            choice = str(idx+1) + ") " + game + "\n"
+            choice = f"{str(idx+1)}) {game}\n"
             choiceOutput += choice 
         choiceOutput += "Q) Quit\n" 
 
@@ -74,7 +74,7 @@ class GameFactory(object):
         """
         creator = cls.games[gameID]
         if not creator:
-            strOutputError = "Invalid gameID({}) or game not found.\n".format(gameID)
+            strOutputError = f"Invalid gameID({gameID}) or game not found.\n"
             raise AssertionError(strOutputError)
 
         return creator

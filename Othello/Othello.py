@@ -74,7 +74,7 @@ class Othello(Game):
             else:
                 coord = self._getMoveCPU()
 
-            print("{} placed piece at {} {}\n".format(self.players[self.turn], coord[0], coord[1]))
+            print(f"{self.players[self.turn]} placed piece at {coord[0]} {coord[1]}\n")
 
             self.board.makeMove(self.turn, coord)
             self.board.printBoard()
@@ -84,7 +84,7 @@ class Othello(Game):
             if gameEnd == "D":
                 print("It's a DRAW!\n")
             elif gameEnd:
-                print(self.players[gameEnd] + " WINS!\n")
+                print(f"{self.players[gameEnd]} WINS!\n")
             else:
                 self.turn = self.board.Opp(self.turn)
     
@@ -93,7 +93,7 @@ class Othello(Game):
     def _getMoveHuman(self):
         success = 0
         while (not(success)):
-            userInput = input("Enter coordinates for " + self.players[self.turn] + ": ")
+            userInput = input(f"Enter coordinates for {self.players[self.turn]}: ")
             coord = userInput.split()
 
             if len(coord) != 2:
@@ -103,11 +103,11 @@ class Othello(Game):
                 X = coord[1]
 
                 if (not(X.isdigit()) or int(X) >= self.boardSize):
-                    print("First coordinate is not an integer or less than " + str(self.boardSize))
+                    print(f"First coordinate is not an integer or less than {str(self.boardSize)}")
                 elif (not(Y.isdigit()) or int(Y) >= self.boardSize):
-                    print("Second coordinate is not an integer or less than " + str(self.boardSize))
+                    print(f"Second coordinate is not an integer or less than {str(self.boardSize)}")
                 elif (not(self.board.validateMove(self.turn, coord))):
-                    print("Invalid move at coordinates:" + str(coord))
+                    print(f"Invalid move at coordinates: {str(coord)}")
                 else:                    
                     success = 1 
 
