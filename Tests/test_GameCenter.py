@@ -5,7 +5,7 @@ from ChutesAndLadders.ChutesAndLadders import ChutesAndLadders
 class Test_GameCenter(unittest.TestCase):
     def test_AddGame(self):
         #Arrange
-        expCount = 1
+        expCount = 1 
 
         #Act
         GameFactory.registerGame("test")
