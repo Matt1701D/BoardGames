@@ -1,8 +1,8 @@
 import unittest
-from BoardGames import GameFactory
+from GameCenter import GameFactory
 from ChutesAndLadders.ChutesAndLadders import ChutesAndLadders
 
-class Test_BoardGames(unittest.TestCase):
+class Test_GameCenter(unittest.TestCase):
     def test_AddGame(self):
         #Arrange
         expCount = 1

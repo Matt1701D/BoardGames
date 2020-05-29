@@ -3,17 +3,19 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>a055496a-f8e8-483b-a9f2-c08b0a073e7a</ProjectGuid>
-    <ProjectHome>.</ProjectHome>
-    <StartupFile>BoardGames.py</StartupFile>
+    <ProjectHome>
+    </ProjectHome>
+    <StartupFile>..\GameCenter\GameCenter.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
     <OutputPath>.</OutputPath>
-    <Name>BoardGames</Name>
+    <Name>GameCenter</Name>
     <RootNamespace>BoardGames</RootNamespace>
     <TestFramework>unittest</TestFramework>
     <UnitTestPattern>test*.py</UnitTestPattern>
     <UnitTestRootDirectory>Tests</UnitTestRootDirectory>
+    <IsWindowsApplication>False</IsWindowsApplication>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <DebugSymbols>true</DebugSymbols>
@@ -56,10 +58,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="TicTacToe\TicTacToeBoard.py" />
-    <Compile Include="BoardGames.py" />
+    <Compile Include="GameCenter.py" />
     <Compile Include="ChutesAndLadders\ChutesAndLadders.py" />
     <Compile Include="Tests\test_TicTacToe.py" />
-    <Compile Include="Tests\test_BoardGames.py">
+    <Compile Include="Tests\test_GameCenter.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Tests\test_ChutesAndLadders.py" />

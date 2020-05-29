@@ -4,9 +4,9 @@ from MyLogger.MyExceptions import *
 
 class MyLogger(logging.getLoggerClass()):
 
-    logFileName = "BoardGames.log"
+    logFileName = "GameCenter.log"
     logFileMode = "w"
-    logName = "BoardGames"
+    logName = "GameCenter"
     logLevel = "DEBUG"
     myLog = None
 

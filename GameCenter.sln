@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29503.13
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "BoardGames", "BoardGames.pyproj", "{A055496A-F8E8-483B-A9F2-C08B0A073E7A}"
+Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "GameCenter", "GameCenter.pyproj", "{A055496A-F8E8-483B-A9F2-C08B0A073E7A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

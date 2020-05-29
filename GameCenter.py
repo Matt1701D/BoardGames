@@ -10,7 +10,7 @@ from Othello.Othello import Othello
 #   1) Add game module to import as "from Package.Module import className"
 #   2) Register game in main module using className of game
 
-class BoardGames(object):
+class GameCenter(object):
 
     @MyLogger.log_decorator
     def ShowGameMenu():        
@@ -88,5 +88,5 @@ if __name__ == '__main__':
     GameFactory.registerGame("ChutesAndLadders")
     GameFactory.registerGame("Othello")
 
-    BoardGames.ShowGameMenu()
+    GameCenter.ShowGameMenu()
 
