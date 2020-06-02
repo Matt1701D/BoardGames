@@ -54,6 +54,9 @@
     <Compile Include="Othello\__init__.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Tests\test_MyLogger.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Tests\test_Othello.py">
       <SubType>Code</SubType>
     </Compile>
