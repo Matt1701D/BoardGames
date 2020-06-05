@@ -6,7 +6,7 @@ class Board(ABC):
 
     # CONSTRUCTOR
 
-    @MyLogger.log_decorator
+    @MyLogger.log(["File"])
     def __init__(self, boardSize, delimeter):
         self._boardSize = boardSize     # Size of board, boards are squared
         self._delimeter = delimeter     # delimter used in board printout for empty spaces
@@ -21,7 +21,7 @@ class Board(ABC):
     # PROTECTED METHODS
 
     @abstractmethod
-    @MyLogger.log_decorator
+    @MyLogger.log(["File"])
     def _initBoard(self, length=1):
         """
         Initialize the game board using delimeter. Can specify length for to set number of delimeters in a cell
@@ -55,7 +55,7 @@ class Board(ABC):
     def getBestMove(self, turn=0):
         pass
 
-    @MyLogger.log_decorator
+    @MyLogger.log(["File"])
     def printBoard(self):
         """
         Print out game board

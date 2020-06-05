@@ -5,7 +5,7 @@ class TicTacToeBoard(Board):
 
     # CONSTRUCTOR
 
-    @MyLogger.log_decorator
+    @MyLogger.log(["File"])
     def __init__(self, boardSize, delimeter):
         """
         Create TicTacToe board of boardSize and populated with delimeter string
@@ -26,7 +26,7 @@ class TicTacToeBoard(Board):
     # PUBLIC METHODS
 
     # ensure move is valid
-    @MyLogger.log_decorator
+    @MyLogger.log(["File"])
     def validateMove(self, turn, coord):
         """
         Ensure the move is valid for turn given a list of coord [Y,X]
@@ -36,7 +36,7 @@ class TicTacToeBoard(Board):
         return self._gameBoard[Y][X] == self._delimeter
 
     # store turn in board and transposed board
-    @MyLogger.log_decorator
+    @MyLogger.log(["File"])
     def makeMove(self, turn, coord):
         """
         Make the move for turn given a list of coord [Y,X]
@@ -46,7 +46,7 @@ class TicTacToeBoard(Board):
             self.__turnsTaken+=1
 
     # check for winner
-    @MyLogger.log_decorator
+    @MyLogger.log(["File"])
     def checkWinner(self):
         """
         Check if the game is over (win or draw)
@@ -59,7 +59,7 @@ class TicTacToeBoard(Board):
             return 0
   
     # always have cpu pick coord to win or block a win
-    @MyLogger.log_decorator
+    @MyLogger.log(["File"])
     def getBestMove(self):
         """
         Compute the best move by picking 1) a winning move 2) blocking a winning move. Returns coord [Y,X]
@@ -110,12 +110,12 @@ class TicTacToeBoard(Board):
     # PROTECTED METHODS
 
     #make transposed board to more quickly check for vertical moves and win
-    @MyLogger.log_decorator
+    @MyLogger.log(["File"])
     def _initBoard(self):
         super()._initBoard()
         self.__gameBoardTranspose = [[self._delimeter] * self._boardSize for x in range(self._boardSize)]
 
-    @MyLogger.log_decorator
+    @MyLogger.log(["File"])
     def _updateBoard(self, turn, coord, isNewPos=False):
         Y = int(coord[0])
         X = int(coord[1])
@@ -125,7 +125,7 @@ class TicTacToeBoard(Board):
     # PRIVATE METHODS
 
     # check for successfull tic tac toe
-    @MyLogger.log_decorator
+    @MyLogger.log(["File"])
     def __checkGameWinner(self):
         sofarR = 1
         sofarL = 1

@@ -9,7 +9,7 @@ class OthelloBoard(Board):
 
     # CONSTRUCTOR 
 
-    @MyLogger.log_decorator
+    @MyLogger.log(["File"])
     def __init__(self, boardSize, delimeter):
         """
         Create Othello board of boardSize and populated with delimeter string
@@ -41,7 +41,7 @@ class OthelloBoard(Board):
 
     # PUBLIC METHODS
 
-    @MyLogger.log_decorator
+    @MyLogger.log(["File"])
     def validateMove(self, turn, coord):
         """
         Ensure the move is valid for turn given a list of coord [Y,X]
@@ -69,7 +69,7 @@ class OthelloBoard(Board):
 
                 return True if self.__tmpMove else False
 
-    @MyLogger.log_decorator
+    @MyLogger.log(["File"])
     def makeMove(self, turn, coord):
         """
         Make the move for turn given a list of coord [Y,X]
@@ -77,7 +77,7 @@ class OthelloBoard(Board):
         if self.validateMove(turn, coord):
             self._updateBoard(turn, coord)
 
-    @MyLogger.log_decorator
+    @MyLogger.log(["File"])
     def checkWinner(self):
         """
         Check if the game is over (win or draw)
@@ -92,7 +92,7 @@ class OthelloBoard(Board):
         else:
             return 0
 
-    @MyLogger.log_decorator
+    @MyLogger.log(["File"])
     def printBoard(self):
         """
         Overridden print board method for Othello
@@ -105,7 +105,7 @@ class OthelloBoard(Board):
         print("\n")
         print(f"White = {self.__pieceCount['W']}, Black = {self.__pieceCount['B']}, Blank = {self.__pieceCount[self._delimeter]}")
 
-    @MyLogger.log_decorator
+    @MyLogger.log(["File"])
     def getBestMove(self, turn):
         """
         Compute the best move for turn in flip count unless corner move possible. Returns coord [Y,X]
@@ -136,7 +136,7 @@ class OthelloBoard(Board):
     
     # PROTECTED METHODS
 
-    @MyLogger.log_decorator
+    @MyLogger.log(["File"])
     def _initBoard(self):
         super()._initBoard()
 
@@ -148,7 +148,7 @@ class OthelloBoard(Board):
         self._gameBoard[hB-1][hB] = self._gameBoard[hB][hB-1] = "B"
 
     # update gameBoard
-    @MyLogger.log_decorator
+    @MyLogger.log(["File"])
     def _updateBoard(self, turn, coord, isNewPos=False):
         if self.__tmpMove:
             Y = int(coord[0])
@@ -175,7 +175,7 @@ class OthelloBoard(Board):
 
     # Sorting method to return move with most flips for corner moves first else other moves
     # added boardsize^2 since no move could have more than that num of flips
-    @MyLogger.log_decorator
+    @MyLogger.log(["File"])
     def __sortBestMove(self,move):        
         if move[0] in self.__cornerTup:
             return move[1] + (self._boardSize**2)
@@ -183,7 +183,7 @@ class OthelloBoard(Board):
             return move[1]
 
     # Check direction for valid move
-    @MyLogger.log_decorator
+    @MyLogger.log(["File"])
     def __isValidMoveDir(self, coord, coordDir, opp):
         Y = int(coord[0])
         X = int(coord[1])

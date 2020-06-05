@@ -6,7 +6,7 @@ from MyLogger.MyExceptions import *     # Custom Exceptions
 # Game interface for game setup and play
 class Game(ABC):
 
-    @MyLogger.log_decorator
+    @MyLogger.log(["File"])
     def __init__(self, turn, boardSize, delimeter='_'):
         self.turn = turn                # whose first turn is it
         self.boardSize = boardSize      # Size of board, boards are squared
@@ -16,7 +16,7 @@ class Game(ABC):
     # PUBLIC METHODS
 
     # Get player names as input
-    @MyLogger.log_decorator
+    @MyLogger.log(["File"])
     def getPlayers(self):
         players = []
         playersSuccess = False
@@ -34,7 +34,7 @@ class Game(ABC):
     # PROTECTED METHODS
 
     # register player
-    @MyLogger.log_decorator
+    @MyLogger.log(["File"])
     def _addPlayer(self, playerKey, playerName):
         self.players[playerKey] = playerName
 
@@ -62,7 +62,7 @@ class Game(ABC):
 
     # User input method for getting board size
     @staticmethod
-    @MyLogger.log_decorator
+    @MyLogger.log(["File"])
     def getBoardSize(boardSize, regEx, minSize=3, maxSize=9, oddSize=True):
         if boardSize is None:
             success = 0
@@ -80,7 +80,7 @@ class Game(ABC):
 
     # User input method for getting computer difficulty level
     @staticmethod
-    @MyLogger.log_decorator
+    @MyLogger.log(["File"])
     def getDifficulty(difficulty, regEx):
         if difficulty is None:
             success = 0
@@ -97,7 +97,7 @@ class Game(ABC):
     
     # User input method for getting human vs human or human vs cpu game mode
     @staticmethod
-    @MyLogger.log_decorator
+    @MyLogger.log(["File"])
     def getGameMode(numPlayers, regEx):
         if numPlayers is None:
             success = 0

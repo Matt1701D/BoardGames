@@ -12,7 +12,7 @@ from Othello.Othello import Othello
 
 class GameCenter(object):
 
-    @MyLogger.log_decorator
+    @MyLogger.log(["File"])
     def ShowGameMenu():        
         """
         Display Game Menu with list of registered games
@@ -38,17 +38,17 @@ class GameCenter(object):
                     gameClass = GameFactory.getGame(int(game)-1)
                     eval(gameClass)()
                 except AssertionError as AssertEx:
-                    MyLogger.logException(AssertEx)
+                    MyLogger.logException(["DB"],AssertEx)
                     print(AssertEx)
                 except NameError as NameEx:
-                    MyLogger.logException(NameEx)
+                    MyLogger.logException(["DB"],NameEx)
                     print(NameEx)
                 except Exception as Ex:
                     strOutputError = "Could not load game. Check the registered game name matches the game's class name and the module has been " 
                     strOutputError += "imported as \'from Package.Module import className\'.\n"
                     print(strOutputError)
 
-                    MyLogger.logException(Ex)
+                    MyLogger.logException(["DB"],Ex)
                     print(Ex)
                     raise
 
@@ -57,7 +57,7 @@ class GameFactory(object):
     games = []  # our master games list
 
     @classmethod  
-    @MyLogger.log_decorator     
+    @MyLogger.log(["File"])     
     def registerGame(cls, game):   
         """
         Add game to game list if not already registered and sort list
@@ -67,7 +67,7 @@ class GameFactory(object):
             cls.games.sort()
 
     @classmethod  
-    @MyLogger.log_decorator
+    @MyLogger.log(["File"])
     def getGame(cls, gameID):
         """
         Lookup game by sorted index and return name of game
@@ -81,7 +81,17 @@ class GameFactory(object):
         
 if __name__ == '__main__':
     # start logging
-    MyLogger.getMyLogger(logLevel="INFO")
+    logFileName = "GameCenter.log"
+    logName = "GameCenterLogFile"
+    logLevel="DEBUG"
+    MyLogger.addFileLogger(logFileName, logName, logLevel=logLevel)
+
+    logName = "GameCenterLogDB"
+    logConnString = ""
+    logDBName = "Log"
+    logTableName = "GameCenter"
+    logLevel="DEBUG"
+    MyLogger.addDBLogger(logName, logConnString, logDBName, logTableName, logLevel)
 
     # Register list of games using className here
     GameFactory.registerGame("TicTacToe")

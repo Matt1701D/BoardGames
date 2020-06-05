@@ -12,7 +12,7 @@ class ChutesAndLadders(Game):
 
     # CONSTRUCTOR
 
-    @MyLogger.log_decorator
+    @MyLogger.log(["File"])
     def __init__(self):
         """
         Create ChutesAndLadders game class.
@@ -32,7 +32,7 @@ class ChutesAndLadders(Game):
         pass
 
     #have players spin and move
-    @MyLogger.log_decorator
+    @MyLogger.log(["File"])
     def _playGame(self):
         playerCnt = len(self.players)
 

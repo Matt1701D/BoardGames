@@ -12,7 +12,7 @@ class TicTacToe(Game):
 
     # CONSTRUCTORS
 
-    @MyLogger.log_decorator
+    @MyLogger.log(["File"])
     def __init__(self, boardSize=None, gameMode=None, difficulty=None, skipPlay=False):   
         """
         Create TicTacToe game class. Optional to pass in boardSize, gameMode (1 to play vs CPU, 2 to play vs Humans)
@@ -27,7 +27,7 @@ class TicTacToe(Game):
             self.difficulty = self.getDifficulty(difficulty, '^[1-3]$')      
         except InvalidParameterException as IPEx:
             # Log and Quit
-            MyLogger.logException(IPEx)
+            MyLogger.logException(["DB"],IPEx)
             print(IPEx)
             raise
         
@@ -41,7 +41,7 @@ class TicTacToe(Game):
     # ClassMethod constructor that does not call __init__
     # used for testing to get around user input
     @classmethod
-    @MyLogger.log_decorator
+    @MyLogger.log(["File"])
     def init(cls, boardSize, difficulty, gameMode):
         """
         Alternate TicTacToe constructor to pass in boardSize, gameMode (1 to play vs CPU, 2 to play vs Humans)
@@ -61,7 +61,7 @@ class TicTacToe(Game):
     # PROTECTED METHODS
 
     # Method to init game parameters common to all constructors
-    @MyLogger.log_decorator
+    @MyLogger.log(["File"])
     def _initGame(self):
         super().__init__(TicTacToe.turn, self.boardSize, TicTacToe.delimeter)
         self.board = TicTacToeBoard(self.boardSize, self.delimeter)
@@ -70,7 +70,7 @@ class TicTacToe(Game):
         self._addPlayer("O","O")
 
     # get next move from user or generate for cpu until game has ended
-    @MyLogger.log_decorator
+    @MyLogger.log(["File"])
     def _playGame(self):
         gameEnd = 0
         while(not(gameEnd)):
@@ -92,7 +92,7 @@ class TicTacToe(Game):
                 self.turn = "X" if self.turn == "O" else "O"
 
     # Player chooses next move
-    @MyLogger.log_decorator
+    @MyLogger.log(["File"])
     def _getMoveHuman(self):
         success = 0
         while (not(success)):
@@ -117,7 +117,7 @@ class TicTacToe(Game):
         return coord
 
     # if cpu difficulty is 2 or greater always pick a winning or blocking move, else just random move
-    @MyLogger.log_decorator
+    @MyLogger.log(["File"])
     def _getMoveCPU(self):        
         if self.difficulty >= 2:
             coord = self.board.getBestMove()

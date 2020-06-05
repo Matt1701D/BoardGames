@@ -11,7 +11,7 @@ class Othello(Game):
 
     # CONSTRUCTORS
 
-    @MyLogger.log_decorator
+    @MyLogger.log(["File"])
     def __init__(self, gameMode=None, skipPlay=False):
         """
         Create Othello game class. Optional to pass in gameMode (1 to play vs CPU, 2 to play vs Humans), dont't pass for user prompt
@@ -23,7 +23,7 @@ class Othello(Game):
             self.numPlayers = self.getGameMode(gameMode, '^[1-2]$')   
         except InvalidParameterException as IPEx:
             # Log and Quit
-            MyLogger.logException(IPEx)
+            MyLogger.logException(["DB"],IPEx)
             print(IPEx)
             raise
 
@@ -37,7 +37,7 @@ class Othello(Game):
     # ClassMethod constructor that does not call __init__
     # used for testing to get around user input
     @classmethod
-    @MyLogger.log_decorator
+    @MyLogger.log(["File"])
     def init(cls, gameMode):
         """
         Alternate Othello constructor to pass in gameMode (1 to play vs CPU, 2 to play vs Humans)
@@ -54,7 +54,7 @@ class Othello(Game):
     # PROTECTED METHODS
 
     # Method to init game parameters common to all constructors
-    @MyLogger.log_decorator
+    @MyLogger.log(["File"])
     def _initGame(self):
         super().__init__(Othello.turn, Othello.boardSize, Othello.delimeter)
         self.board = OthelloBoard(self.boardSize,self.delimeter)
@@ -63,7 +63,7 @@ class Othello(Game):
         self._addPlayer("W","White")
 
     # get next move from user or generate for cpu until game has ended
-    @MyLogger.log_decorator
+    @MyLogger.log(["File"])
     def _playGame(self):
         self.board.printBoard()
 
@@ -89,7 +89,7 @@ class Othello(Game):
                 self.turn = self.board.Opp(self.turn)
     
     # Player chooses next move
-    @MyLogger.log_decorator
+    @MyLogger.log(["File"])
     def _getMoveHuman(self):
         success = 0
         while (not(success)):
@@ -114,7 +114,7 @@ class Othello(Game):
         return coord
     
     # get CPU move
-    @MyLogger.log_decorator
+    @MyLogger.log(["File"])
     def _getMoveCPU(self):
         return self.board.getBestMove(self.turn)
 

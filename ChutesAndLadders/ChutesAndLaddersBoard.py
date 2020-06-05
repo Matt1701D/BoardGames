@@ -5,7 +5,7 @@ class ChutesAndLaddersBoard(Board):
 
     # CONSTRUCTOR
 
-    @MyLogger.log_decorator
+    @MyLogger.log(["File"])
     def __init__(self, boardSize, delimeter, playerNum):
         """
         Create ChutesAndLadders board of boardSize and populated with delimeter string and number of players playerNum
@@ -30,7 +30,7 @@ class ChutesAndLaddersBoard(Board):
 
     # PUBLIC METHODS
 
-    @MyLogger.log_decorator
+    @MyLogger.log(["File"])
     def makeMove(self, turn, spin):
         """
         Make the move for turn given a spin integer
@@ -50,7 +50,7 @@ class ChutesAndLaddersBoard(Board):
         self.__player_loc[turn] = pos_new
         self._updateBoard(turn, pos_new, True)
 
-    @MyLogger.log_decorator
+    @MyLogger.log(["File"])
     def validateMove(self, turn, position):
         """
         Ensure the move is valid. Not necessary to call since game board logic ensures moves within game board
@@ -58,7 +58,7 @@ class ChutesAndLaddersBoard(Board):
         return position > 0 and position <= 100
 
     # check for winner
-    @MyLogger.log_decorator
+    @MyLogger.log(["File"])
     def checkWinner(self,turn):
         """
         Check if the game is over by a player at or past 100 spot
@@ -72,7 +72,7 @@ class ChutesAndLaddersBoard(Board):
     # PROTECTED METHODS
 
     # initialize the game board and players
-    @MyLogger.log_decorator
+    @MyLogger.log(["File"])
     def _initBoard(self):
         # set cell width according to number of players and taking into account chutes/ladders labels
         cellLength = 4 + self.__playerNum
@@ -107,7 +107,7 @@ class ChutesAndLaddersBoard(Board):
             self._updateBoard(labelValue, value)
 
     # convert position into grid coordinates and update gameBoard
-    @MyLogger.log_decorator
+    @MyLogger.log(["File"])
     def _updateBoard(self,label,position,isNewPos=False):
         gridCoord = self.__posToGrid(position)
         y = gridCoord[0]
@@ -141,7 +141,7 @@ class ChutesAndLaddersBoard(Board):
     # PRIVATE METHODS
         
     # convert position into grid coordinates and update gameBoard
-    @MyLogger.log_decorator
+    @MyLogger.log(["File"])
     def __posToGrid(self,position):
         # convert position to grid coordinates (remember board starts at (9,0), moves Left to Right and Up
         # and then Right to Left and Up

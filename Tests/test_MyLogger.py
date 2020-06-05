@@ -3,37 +3,66 @@ from MyLogger.MyLogger import MyLogger
 from MyLogger.MyExceptions import *
 
 class Test_MyLogger(unittest.TestCase):
-    def test_CreateLogger(self):
+    def test_CreateFileLogger(self):
         #Arrange
         logFileName = "TestLog.log"
         logFileMode = "w"
-        logName = "TestLog"
+        logName = "TestLogFile"
         logLevel = "DEBUG"        
 
         #Act
-        MyLogger.getMyLogger(logFileName=logFileName,logFileMode=logFileMode,logName=logName,logLevel=logLevel)
-        myLoggerFile = MyLogger.myLog.handlers[0].baseFilename
+        MyLogger.addFileLogger(logFileName=logFileName,logFileMode=logFileMode,logName=logName,logLevel=logLevel)
+        myLoggerFile = MyLogger.myLog["File"].handlers[0].baseFilename
 
         #Assert
-        self.assertIsNotNone(MyLogger.myLog)
+        self.assertIsNotNone(MyLogger.myLog["File"])
         assert os.path.exists(myLoggerFile)
+
+    def test_CreateDBLogger(self):
+        #Arrange
+        logName = "TestLogDB"
+        logTableName = "GameCenter"
+        logLevel="DEBUG"
+        logConnString = ""
+        logDBName = "Log"    
+
+        #Act
+        MyLogger.addDBLogger(logName, logConnString, logDBName, logTableName, logLevel)
+
+        #Assert
+        self.assertIsNotNone(MyLogger.myLog["DB"])
+
+    def test_LogToDB(self):
+        #Arrange
+        logName = "TestLogDB"
+        logTableName = "GameCenter"
+        logLevel="DEBUG"
+        logConnString = ""
+        logDBName = "Log"    
+
+        #Act
+        MyLogger.addDBLogger(logName, logConnString, logDBName, logTableName, logLevel)
+        actResult = MyLogger.logDebug(["DB"],"test")
+
+        #Assert
+        self.assertTrue(actResult)
 
     def test_CustomException(self):
         #Arrange
         logFileName = "TestLog.log"
         logFileMode = "w"
-        logName = "TestLog"
+        logName = "TestLogFile"
         logLevel = "ERROR"   
         myExFound = False
 
         #Act
-        MyLogger.getMyLogger(logFileName=logFileName,logFileMode=logFileMode,logName=logName,logLevel=logLevel)
-        myLoggerFile = MyLogger.myLog.handlers[0].baseFilename
+        MyLogger.addFileLogger(logFileName=logFileName,logFileMode=logFileMode,logName=logName,logLevel=logLevel)
+        myLoggerFile = MyLogger.myLog["File"].handlers[0].baseFilename
 
         try:
             raise InvalidParameterException("testParam","testValue","^[0-9]$")
         except InvalidParameterException as IPEx:
-            MyLogger.logException(IPEx)
+            MyLogger.logException(["File"],IPEx)
 
         #Assert
         with open(myLoggerFile) as file:
